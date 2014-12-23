@@ -1,0 +1,9 @@
+<%@ val body: String %>
+<html>
+  <head>
+    <title>SHACHI</title>
+  </head>
+  <body>
+    <%= unescape(body) %>
+  </body>
+</html>
