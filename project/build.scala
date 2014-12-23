@@ -28,7 +28,11 @@ object ShachiWebAppBuild extends Build {
         "ch.qos.logback" % "logback-classic" % "1.1.2" % "runtime",
         "org.eclipse.jetty" % "jetty-webapp" % "9.1.5.v20140505" % "container",
         "org.eclipse.jetty" % "jetty-plus" % "9.1.5.v20140505" % "container",
-        "javax.servlet" % "javax.servlet-api" % "3.1.0"
+        "javax.servlet" % "javax.servlet-api" % "3.1.0",
+        // for DB
+        "org.squeryl" %% "squeryl" % "0.9.5-7",
+        "mysql" % "mysql-connector-java" % "5.1.10",
+        "c3p0" % "c3p0" % "0.9.1.2"
       ),
       scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
         Seq(
