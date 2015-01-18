@@ -73,7 +73,7 @@ sub migrate_options {
         my $data = $option->{data};
         $dbix_new->table('metadata_value')->insert({
             id => $data->{id},
-            class => $data->{class},
+            value_type => $data->{class},
             value => $data->{value},
         });
     }
@@ -106,7 +106,7 @@ sub migrate_scheme {
             shown => 1,
             multi_value => $data->{multi_value},
             input_type => $input_type_by_type->{$data->{type}},
-            class => $data->{options},
+            value_type => $data->{options},
             color => $data->{color},
         });
     }
@@ -120,7 +120,7 @@ sub migrate_scheme {
             shown => 0,
             multi_value => 1,
             input_type => $input_type_by_type->{'select'},
-            class => 'motherTongue',
+            value_type => 'motherTongue',
             color => '#ffcccc',
         },
         {
@@ -130,7 +130,7 @@ sub migrate_scheme {
             shown => 0,
             multi_value => 1,
             input_type => $input_type_by_type->{'select'},
-            class => 'dialect',
+            value_type => 'dialect',
             color => '#ffcccc',
         },
         {
@@ -140,7 +140,7 @@ sub migrate_scheme {
             shown => 0,
             multi_value => 1,
             input_type => $input_type_by_type->{'select'},
-            class => 'level',
+            value_type => 'level',
             color => '#ffcccc',
         },
         {
@@ -150,7 +150,7 @@ sub migrate_scheme {
             shown => 0,
             multi_value => 1,
             input_type => $input_type_by_type->{'select'},
-            class => 'age',
+            value_type => 'age',
             color => '#ffcccc',
         },
         {
@@ -160,7 +160,7 @@ sub migrate_scheme {
             shown => 0,
             multi_value => 1,
             input_type => $input_type_by_type->{'select'},
-            class => 'gender',
+            value_type => 'gender',
             color => '#ffcccc',
         },
     ];
@@ -278,7 +278,7 @@ sub _meta_value {
     } elsif ( $input_type == 3 || $input_type == 4 || $input_type == 5 ) { # select or select_only, relation
         my $val_id = !$val ? 0 : do {
             my $mv = $dbix_new->table('metadata_value')->search({
-                class => $meta->{data}->{class},
+                value_type => $meta->{data}->{value_type},
                 value => $val,
             })->single;
             $mv && $mv->{data}->{id};

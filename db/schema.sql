@@ -26,7 +26,7 @@ CREATE TABLE `metadata` (
   `shown` boolean NOT NULL DEFAULT true,
   `multi_value` boolean NOT NULL,
   `input_type` int NOT NULL,
-  `class` varchar(100) NOT NULL,
+  `value_type` varchar(100) NOT NULL, -- metadata_value.value_type
   `color` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_name` (`name`),
@@ -36,10 +36,10 @@ CREATE TABLE `metadata` (
 DROP TABLE IF EXISTS `metadata_value`;
 CREATE TABLE `metadata_value` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `class` varchar(100) NOT NULL,
+  `value_type` varchar(100) NOT NULL, -- metadata.value_type
   `value` varchar(100) NOT NULL,
   PRIMARY KEY(`id`),
-  UNIQUE KEY `idx_class_value` (`class`, `value`),
+  UNIQUE KEY `idx_type_value` (`value_type`, `value`),
   KEY `idx_value` (`value`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
