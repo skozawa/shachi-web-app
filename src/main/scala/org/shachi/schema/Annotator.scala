@@ -2,10 +2,16 @@ package org.shachi.schema
 
 import org.squeryl.Schema
 import org.squeryl.PrimitiveTypeMode._
-import org.shachi.model.Annotator
+import org.shachi.model.{Annotator => AnnotatorModel}
 
-object Annotators extends Schema {
-  val annotators = table[Annotator]("annotators")
+object Annotator extends Schema {
+  val annotator = table[AnnotatorModel]("annotator")
 
-  def selectAll = from(annotators)(s => select(s))
+  on(annotator)(a => declare(
+    a.name is(dbType("text")),
+    a.mail is(dbType("text")),
+    a.organization is(dbType("text"))
+  ))
+
+  def selectAll = from(annotator)(s => select(s))
 }

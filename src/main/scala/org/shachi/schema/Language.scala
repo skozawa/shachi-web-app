@@ -2,14 +2,16 @@ package org.shachi.schema
 
 import org.squeryl.Schema
 import org.squeryl.PrimitiveTypeMode._
-import org.shachi.model.Language
+import org.shachi.model.{Language => LanguageModel}
 
-object Languages extends Schema {
-  val languages = table[Language]("languages")
+object Language extends Schema {
+  val language = table[LanguageModel]("language")
 
-  on(languages)(l => declare(
-    l.code is(unique, indexed("idx_code"))
+  on(language)(l => declare(
+    l.code is(unique, indexed("idx_code"), dbType("varchar(3)")),
+    l.name is(dbType("varchar(100)")),
+    l.area is(dbType("varchar(100)"))
   ))
 
-  def selectAll = from(languages)(s => select(s))
+  def selectAll = from(language)(s => select(s))
 }
