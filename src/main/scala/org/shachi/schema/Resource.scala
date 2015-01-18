@@ -13,5 +13,5 @@ object Resource extends Schema {
     columns(r.isPublic, r.created) are(indexed("idx_public_created"))
   ))
 
-  def selectAll = from(resource)(r => select(r)).page(0, 10)
+  def selectAll = from(resource)(r => select(r))
 }
