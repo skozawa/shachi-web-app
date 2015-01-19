@@ -4,9 +4,9 @@ import org.scalatra._
 import scalate.ScalateSupport
 import org.shachi.db.DatabaseSessionSupport
 
-class List extends ShachiWebAppStack with DatabaseSessionSupport {
+class FacetServlet extends ShachiWebAppStack with DatabaseSessionSupport {
   get("/") {
     contentType = "text/html"
-    ssp("/list/index")
+    ssp("/facet/index")
   }
 }

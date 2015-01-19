@@ -4,9 +4,9 @@ import org.scalatra._
 import scalate.ScalateSupport
 import org.shachi.db.DatabaseSessionSupport
 
-class Statistics extends ShachiWebAppStack with DatabaseSessionSupport {
+class ListServlet extends ShachiWebAppStack with DatabaseSessionSupport {
   get("/") {
     contentType = "text/html"
-    ssp("/statistics/index")
+    ssp("/list/index")
   }
 }
