@@ -8,4 +8,8 @@
   <group name="styles">
     <css>/less/*.less</css>
   </group>
+
+  <group name="styles_edit">
+    <css>/less/edit/*.less</css>
+  </group>
 </groups>
