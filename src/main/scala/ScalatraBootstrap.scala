@@ -9,6 +9,7 @@ class ScalatraBootstrap extends LifeCycle with DatabaseInit {
     context.mount(new ListServlet, "/list/*")
     context.mount(new FacetServlet, "/facet/*")
     context.mount(new StatisticsServlet, "/statistics/*")
+    context.mount(new EditServlet, "/edit/*")
     context.mount(new ShachiServlet, "/*")
   }
 
