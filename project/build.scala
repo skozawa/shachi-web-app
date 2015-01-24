@@ -50,7 +50,8 @@ object ShachiWebAppBuild extends Build {
           )
         )
       },
-      (webappResources in Compile) <+= (targetFolder in generateResources in Compile)
+      (webappResources in Compile) <+= (targetFolder in generateResources in Compile),
+      watchSources <++= (sourceDirectory in Compile) map (d => (d / "webapp" ** "*").get)
     )
   )
 }
