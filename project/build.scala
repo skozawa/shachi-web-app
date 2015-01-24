@@ -4,6 +4,10 @@ import org.scalatra.sbt._
 import org.scalatra.sbt.PluginKeys._
 import com.mojolly.scalate.ScalatePlugin._
 import ScalateKeys._
+import com.earldouglas.xsbtwebplugin.WebPlugin._
+import com.earldouglas.xsbtwebplugin.PluginKeys._
+import com.bowlingx.sbt.plugins.Wro4jPlugin._
+import com.bowlingx.sbt.plugins.Wro4jPlugin.Wro4jKeys._
 
 object ShachiWebAppBuild extends Build {
   val Organization = "org.shachi"
@@ -15,7 +19,7 @@ object ShachiWebAppBuild extends Build {
   lazy val project = Project (
     "shachi-web-app",
     file("."),
-    settings = ScalatraPlugin.scalatraWithJRebel ++ scalateSettings ++ Seq(
+    settings = ScalatraPlugin.scalatraWithJRebel ++ scalateSettings ++ wro4jSettings ++ Seq(
       organization := Organization,
       name := Name,
       version := Version,
@@ -45,7 +49,8 @@ object ShachiWebAppBuild extends Build {
             Some("templates")
           )
         )
-      }
+      },
+      (webappResources in Compile) <+= (targetFolder in generateResources in Compile)
     )
   )
 }
