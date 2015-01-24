@@ -1,0 +1,23 @@
+<%@ val body: String %>
+<html>
+  <head>
+    <title>SHACHI - Edit</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="compiled/styles_edit.css" type="text/css">
+  </head>
+  <body>
+    <div id="header">
+      <a href="/edit" class="logo">
+        <img src="images/edit/logo.jpg">
+      </a>
+    </div>
+
+    <div id="main">
+      <%= unescape(body) %>
+    </div>
+
+    <div id="footer">
+      &copy; 2008 SHACHI
+    </div>
+  </body>
+</html>
