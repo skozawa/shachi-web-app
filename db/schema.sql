@@ -47,6 +47,7 @@ DROP TABLE IF EXISTS `resource`;
 CREATE TABLE `resource` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shachi_id` varchar(20) NOT NULL,
+  `title` text NOT NULL,
   `is_public` boolean NOT NULL DEFAULT true,
   `annotator_id` int(11) NOT NULL DEFAULT 1,
   `status` int NOT NULL DEFAULT 1,

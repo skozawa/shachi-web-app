@@ -98,6 +98,7 @@ sub migrate_scheme {
     my @items = $dbix_old->table('scheme')->all;
     foreach my $item ( @items ) {
         my $data = $item->{data};
+        next if $data->{name} eq 'title'; # titleは別
         $dbix_new->table('metadata')->insert({
             id => $data->{id},
             name => $data->{name},
@@ -195,6 +196,7 @@ sub migrate_resources {
         $dbix_new->table('resource')->insert({
             id => $data->{id},
             shachi_id => $data->{shachi_id},
+            title => $data->{title},
             is_public => $data->{is_public},
             annotator_id => $data->{annotator},
             status => $status_map->{$data->{status}},

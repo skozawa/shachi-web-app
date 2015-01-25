@@ -25,11 +25,12 @@ import ResourceStatus._
 class Resource (
   val id: ResourceId,
   @Column("shachi_id") val shachiId: String,
+  val title: String,
   @Column("is_public") val isPublic: Boolean,
   @Column("annotator_id") val annotatorId: AnnotatorId,
   @Column("status") val status: ResourceStatus,
   val created: Timestamp,
   val modified: Timestamp
 ) extends KeyedEntity[IntField] {
-  def this() = this(new ResourceId(1), "", true, new AnnotatorId(1), ResourceStatus.New, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()))
+  def this() = this(new ResourceId(1), "", "", true, new AnnotatorId(1), ResourceStatus.New, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()))
 }
