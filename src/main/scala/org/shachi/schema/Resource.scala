@@ -3,6 +3,7 @@ package org.shachi.schema
 import org.squeryl.Schema
 import org.squeryl.PrimitiveTypeMode._
 import org.shachi.model.{Resource => ResourceModel}
+import org.shachi.model.AnnotatorId
 
 object Resource extends Schema {
   val resource = table[ResourceModel]("resource")
@@ -14,4 +15,8 @@ object Resource extends Schema {
   ))
 
   def selectAll = from(resource)(r => select(r))
+
+  def countByAnnotatorId:Map[AnnotatorId, Int] = from(resource)(r =>
+    groupBy(r.annotatorId.value) compute(count)
+  ).map(c => (new AnnotatorId(c.key), c.measures.toInt)).toMap
 }
