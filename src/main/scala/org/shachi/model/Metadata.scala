@@ -5,7 +5,7 @@ import org.squeryl.annotations.Column
 import org.squeryl.customtypes.CustomTypesMode._
 import org.squeryl.customtypes._
 
-class MetadataId(id: Long) extends LongField(id) with Domain[Long] {
+class MetadataId(id: Long) extends LongField(id) with EntityId[Metadata] {
   override def validate(id: Long) = assert(id > -1, "id must be positive, got " + id)
 }
 

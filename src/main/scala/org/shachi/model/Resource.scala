@@ -6,7 +6,7 @@ import org.squeryl.customtypes.CustomTypesMode._
 import org.squeryl.customtypes._
 import java.sql.Timestamp
 
-class ResourceId(id: Long) extends LongField(id) with Domain[Long] {
+class ResourceId(id: Long) extends LongField(id) with EntityId[Resource] {
   override def validate(id: Long) = assert(id > -1, "id must be positive, got " + id)
 }
 
