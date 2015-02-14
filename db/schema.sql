@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS `annotator`;
 CREATE TABLE `annotator` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
   `mail` text NOT NULL,
   `organization` text NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE `annotator` (
 
 DROP TABLE IF EXISTS `language`;
 CREATE TABLE `language` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `code` varchar(3) NOT NULL,
   `name` varchar(100) NOT NULL,
   `area` varchar(100) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE `language` (
 
 DROP TABLE IF EXISTS `metadata`;
 CREATE TABLE `metadata` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
   `order_num` int NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE `metadata` (
 
 DROP TABLE IF EXISTS `metadata_value`;
 CREATE TABLE `metadata_value` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `value_type` varchar(100) NOT NULL, -- metadata.value_type
   `value` varchar(100) NOT NULL,
   PRIMARY KEY(`id`),
@@ -45,11 +45,11 @@ CREATE TABLE `metadata_value` (
 
 DROP TABLE IF EXISTS `resource`;
 CREATE TABLE `resource` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `shachi_id` varchar(20) NOT NULL,
   `title` text NOT NULL,
   `is_public` boolean NOT NULL DEFAULT true,
-  `annotator_id` int(11) NOT NULL DEFAULT 1,
+  `annotator_id` bigint NOT NULL DEFAULT 1,
   `status` int NOT NULL DEFAULT 1,
   `created` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -62,10 +62,10 @@ CREATE TABLE `resource` (
 DROP TABLE IF EXISTS `resources_metadata`;
 CREATE TABLE `resources_metadata` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `resource_id` int(11) NOT NULL,
-  `metadata_id` int(11) NOT NULL,
-  `language_id` int(11) NOT NULL,
-  `value_id` int(11) NOT NULL DEFAULT 0, -- metadata_value_id or language_id
+  `resource_id` bigint NOT NULL,
+  `metadata_id` bigint NOT NULL,
+  `language_id` bigint NOT NULL,
+  `value_id` bigint NOT NULL DEFAULT 0, -- metadata_value_id or language_id
   `content` text,
   `comment` text,
   PRIMARY KEY (`id`),
@@ -75,7 +75,7 @@ CREATE TABLE `resources_metadata` (
 
 DROP TABLE IF EXISTS `title_list`;
 CREATE TABLE `title_list` (
-  `resource_id` int(11) NOT NULL,
+  `resource_id` bigint NOT NULL,
   `title` text NOT NULL,
   `mid` varchar(3) NOT NULL,
   `common_title` text NOT NULL,
