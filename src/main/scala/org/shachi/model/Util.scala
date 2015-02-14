@@ -7,6 +7,8 @@ trait EntityId[A] { self: CustomType[Long] =>
   def validate(a: Long): Unit
   def value: Long
 
+  override def hashCode = value.toInt
+
   override def equals(other: Any): Boolean = other match {
     case that: AnnotatorId => this.isInstanceOf[AnnotatorId] && this.value == that.value
     case that: LanguageId  => this.isInstanceOf[LanguageId]  && this.value == that.value
