@@ -1,16 +1,27 @@
 <%@ val annotators: Iterable[org.shachi.model.Annotator] %>
 <%@ val countByAnnotatorId: Map[org.shachi.model.AnnotatorId, Int] %>
+<%@ val resources: Iterable[org.shachi.model.Resource] %>
 <h1>Hello, Edit world!</h1>
 
 <div id="annotator_select">
-  Annotator:
-  <select>
-    <option>-- Select your name --</option>
-    #for ( annotator <- annotators )
-      <option value="${annotator.id}">
-        ${annotator.name}
-        (${countByAnnotatorId.getOrElse(annotator.id, 0)})
-      </option>
-    #end
-  </select>
+  <form name="selectAnnotatorForm" action="/edit" method="get">
+    Annotator:
+    <select name="aid" onchange="document.selectAnnotatorForm.submit()">
+      <option>-- Select your name --</option>
+      #for ( annotator <- annotators )
+        #if ( countByAnnotatorId.isDefinedAt(annotator.id) )
+          <option value="${annotator.id.value}">
+            ${annotator.name}
+            (${countByAnnotatorId.getOrElse(annotator.id, 0)})
+          </option>
+        #end
+      #end
+    </select>
+  </form>
+</div>
+
+<div>
+  #for ( resource <- resources )
+    <div>${resource.id}</div>
+  #end
 </div>
