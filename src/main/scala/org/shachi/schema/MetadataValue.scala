@@ -10,7 +10,7 @@ object MetadataValue extends Schema {
   on(metadataValue)(m => declare(
     m.valueType is(dbType("varchar(100)")),
     m.value is(dbType("varchar(100)")),
-    columns(m.valueType, m.value) are(unique, indexed("idex_type_value"))
+    columns(m.valueType, m.value) are(unique, indexed("idx_type_value"))
   ))
 
   def selectAll = from(metadataValue)(s => select(s))

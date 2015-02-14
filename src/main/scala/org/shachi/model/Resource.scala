@@ -6,8 +6,8 @@ import org.squeryl.customtypes.CustomTypesMode._
 import org.squeryl.customtypes._
 import java.sql.Timestamp
 
-class ResourceId(id: Int) extends IntField(id) with Domain[Int] {
-  override def validate(id: Int) = assert(id > -1, "id must be positive, got " + id)
+class ResourceId(id: Long) extends LongField(id) with Domain[Long] {
+  override def validate(id: Long) = assert(id > -1, "id must be positive, got " + id)
 }
 
 object ResourceStatus extends Enumeration {
@@ -31,6 +31,6 @@ class Resource (
   @Column("status") val status: ResourceStatus,
   val created: Timestamp,
   val modified: Timestamp
-) extends KeyedEntity[IntField] {
+) extends KeyedEntity[LongField] {
   def this() = this(new ResourceId(1), "", "", true, new AnnotatorId(1), ResourceStatus.New, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()))
 }

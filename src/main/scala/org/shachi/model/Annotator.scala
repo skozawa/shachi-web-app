@@ -5,8 +5,8 @@ import org.squeryl.annotations.Column
 import org.squeryl.customtypes.CustomTypesMode._
 import org.squeryl.customtypes._
 
-class AnnotatorId(id: Int) extends IntField(id) with Domain[Int] {
-  override def validate(id: Int) = assert(id > -1, "id must be positive, got " + id)
+class AnnotatorId(id: Long) extends LongField(id) with Domain[Long] {
+  override def validate(id: Long) = assert(id > -1, "id must be positive, got " + id)
 }
 
 class Annotator(
@@ -14,5 +14,5 @@ class Annotator(
   val name: String,
   val mail: String,
   val organization: String
-) extends KeyedEntity[IntField] {
+) extends KeyedEntity[LongField] {
 }
