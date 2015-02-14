@@ -16,7 +16,7 @@ object Resource extends Schema {
 
   def selectAll = from(resource)(r => select(r))
 
-  def selectByAnnotatorId(id: AnnotatorId) = from(resource)(r => where(r.id.value === id.value) select(r))
+  def selectByAnnotatorId(annotatorId: AnnotatorId) = from(resource)(r => where(r.annotatorId.value === annotatorId.value) select(r))
 
   def countByAnnotatorId:Map[AnnotatorId, Int] = from(resource)(r =>
     groupBy(r.annotatorId.value) compute(count)
