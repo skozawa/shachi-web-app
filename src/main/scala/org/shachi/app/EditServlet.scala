@@ -4,8 +4,7 @@ import org.scalatra._
 import scalate.ScalateSupport
 import org.squeryl.PrimitiveTypeMode._
 import org.shachi.db.DatabaseSessionSupport
-import org.shachi.schema.Annotator
-import org.shachi.schema.Resource
+import org.shachi.schema.{Annotator,Resource,Metadata}
 import org.shachi.model.{AnnotatorId,ResourceId}
 
 class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
@@ -33,11 +32,13 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
       val id = multiParams("captures").head
       val resourceId = new ResourceId(id.toLong)
 
-      Resource.selectById(resourceId).fold(NotFound("Resouce not found")){resource =>
+      Resource.selectDetailById(resourceId).fold(NotFound("Resouce not found")){resource =>
         contentType = "text/html"
         Ok(ssp("/edit/detail",
             "layout" -> defaultLayout,
-            "resource" -> resource
+            "resource" -> resource,
+            "metadata" -> Metadata.selectShown,
+            "annotatorOpt" -> Annotator.selectById(resource.resource.annotatorId)
         ))
       }
     }

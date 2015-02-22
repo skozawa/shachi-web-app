@@ -1,5 +1,31 @@
-<%@ val resource: org.shachi.model.Resource %>
+<%@ val resource: org.shachi.model.ResourceDetails.ResourceDetail %>
+<%@ val metadata: List[org.shachi.model.Metadata] %>
+<%@ val annotatorOpt: Option[org.shachi.model.Annotator] %>
 
-<div>
-  ${resource.id}
+<div id="detail-header">
+  <a href="/edit?aid=${annotatorOpt.fold("1")(_.id.value.toString)}">Index</a>,
+  <a href="${resource.resource.editLink}">Edit</a>
 </div>
+
+<table id="metadata">
+  <tbody>
+    <tr>
+      <td class="label">annotator</td>
+      <td>${annotatorOpt.fold("")(_.name)}</td>
+    </tr>
+    <tr>
+      <td class="label">title</td>
+      <td>${resource.resource.title}</td>
+    </tr>
+    #for ( m <- metadata )
+      <tr>
+        <td class="label">${m.label}</td>
+        <td>
+          #for ( mv <- resource.getValuesByMetadataId(m.id) )
+            ${mv.toLabel}<br>
+          #end
+        </td>
+      </tr>
+    #end
+  </tbody>
+</table>

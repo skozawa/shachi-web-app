@@ -3,6 +3,7 @@ package org.shachi.schema
 import org.squeryl.Schema
 import org.squeryl.PrimitiveTypeMode._
 import org.shachi.model.{Language => LanguageModel}
+import org.shachi.model.{MetadataValueId}
 
 object Language extends Schema {
   val language = table[LanguageModel]("language")
@@ -15,4 +16,7 @@ object Language extends Schema {
   ))
 
   def selectAll = from(language)(s => select(s))
+
+  def selectByValueIds(ids: List[MetadataValueId]) =
+    from(language)(l => where(l.valueId.value in ids.map(_.value)) select(l)).seq.toList
 }

@@ -3,6 +3,7 @@ package org.shachi.schema
 import org.squeryl.Schema
 import org.squeryl.PrimitiveTypeMode._
 import org.shachi.model.{ResourcesMetadata => ResourcesMetadataModel}
+import org.shachi.model.{ResourceId}
 
 object ResourcesMetadata extends Schema {
   val resourcesMetadata = table[ResourcesMetadataModel]("resources_metadata")
@@ -15,4 +16,7 @@ object ResourcesMetadata extends Schema {
   ))
 
   def selectAll = from(resourcesMetadata)(rm => select(rm))
+
+  def selectByResourceId(resourceId: ResourceId) =
+    from(resourcesMetadata)(rm => where(rm.resourceId.value === resourceId.value) select(rm)).seq.toList
 }

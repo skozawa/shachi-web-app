@@ -3,6 +3,7 @@ package org.shachi.schema
 import org.squeryl.Schema
 import org.squeryl.PrimitiveTypeMode._
 import org.shachi.model.{Annotator => AnnotatorModel}
+import org.shachi.model.AnnotatorId
 
 object Annotator extends Schema {
   val annotator = table[AnnotatorModel]("annotator")
@@ -14,4 +15,7 @@ object Annotator extends Schema {
   ))
 
   def selectAll = from(annotator)(s => select(s))
+
+  def selectById(id: AnnotatorId): Option[AnnotatorModel] =
+    from(annotator)(a => where(a.id.value === id.value) select(a)).headOption
 }

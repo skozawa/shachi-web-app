@@ -3,6 +3,7 @@ package org.shachi.schema
 import org.squeryl.Schema
 import org.squeryl.PrimitiveTypeMode._
 import org.shachi.model.{Metadata => MetadataModel}
+import org.shachi.model.{MetadataId}
 
 object Metadata extends Schema {
   val metadata = table[MetadataModel]("metadata")
@@ -16,4 +17,9 @@ object Metadata extends Schema {
   ))
 
   def selectAll = from(metadata)(s => select(s))
+
+  def selectShown = from(metadata)(m => where(m.shown === true) select(m)).seq.toList.sortBy(_.orderNum)
+
+  def selectByIds(ids: List[MetadataId]) =
+    from(metadata)(m => where(m.id.value in ids.map(_.value)) select(m)).seq.toList
 }
