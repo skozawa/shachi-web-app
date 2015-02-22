@@ -1,19 +1,82 @@
 @base: #000000;
 
 body {
-    color: @base
+  color: @base
 }
 
 #header {
-    margin-bottom: 1em;
-    padding-bottom: 0.5em;
-    border-bottom: solid 1px #999999;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  border-bottom: solid 1px #999999;
 }
 
 #footer {
-    font-size: 9px;
-    text-align: center;
-    margin-top: 1em;
-    padding-top: 1em;
-    border-top: solid 1px #999999;
+  font-size: 9px;
+  text-align: center;
+  margin-top: 1em;
+  padding-top: 1em;
+  border-top: solid 1px #999999;
+}
+
+#resource-list {
+  margin: 0.5px 0;
+  border-collapse: collapse;
+  border: 1px solid #999999;
+
+  th {
+    background-color: #333366;
+    color: #ffffff;
+  }
+  td {
+    font-size: 10pt;
+    vertical-align: top;
+    padding: 2px;
+    height: 16px;
+  }
+  td.status {
+    width: 16px;
+    background-repeat: no-repeat;
+    &.new {
+      background-image: url('/images/edit/new.png');
+    }
+    &.editing {
+      background-image: url('/images/edit/editing.png');
+    }
+    &.complete {
+      background-image: url('/images/edit/complete.png');
+    }
+    &.pending {
+      background-image: url('/images/edit/pending.png');
+    }
+    &.revised {
+      background-image: url('/images/edit/revised.png');
+    }
+    &.proofed {
+      background-image: url('/images/edit/proofed.png');
+    }
+    &.proofed2 {
+      background-image: url('/images/edit/proofed2.png');
+    }
+  }
+  td.title {
+    width: 600px;
+  }
+  td.delete {
+    width: 16px;
+    background-image: url('/images/edit/del.png');
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  td.date {
+    font-size: 12px;
+  }
+  tr:nth-child(2n-1) td {
+    background-color: #ccccff;
+  }
+  tr:nth-child(2n) td {
+    background-color: #ffffff;
+  }
+  tr:hover td {
+    background-color: #ffccff;
+  }
 }

@@ -33,4 +33,7 @@ class Resource (
   val modified: Timestamp
 ) extends KeyedEntity[LongField] {
   def this() = this(new ResourceId(1), "", "", true, new AnnotatorId(1), ResourceStatus.New, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()))
+
+  def editLink = "/edit/edit/" + id.value.toString
+  def detailLink = "/edit/detail/" + id.value.toString
 }

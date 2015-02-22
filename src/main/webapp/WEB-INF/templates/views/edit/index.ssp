@@ -21,7 +21,34 @@
 </div>
 
 <div>
-  #for ( resource <- resources )
-    <div>${resource.id}</div>
-  #end
+  <table id="resource-list">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th></th><th></th>
+        <th>Title</th>
+        <th></th><th></th>
+        <th>Last update</th>
+      </tr>
+    </thead>
+    <tbody>
+    #for ( resource <- resources )
+      <tr data-resource-id="${resource.id.value.toString}">
+        <td>${resource.shachiId}</td>
+        <td class="status ${resource.status}"></td>
+        <td class="scope">
+          #if(resource.isPublic)[Public]#(else)[Private]#end
+        </td>
+        <td class="title">
+          <a href="${resource.detailLink}">${resource.title}</a>
+        </td>
+        <td class="edit">
+          <a href="${resource.editLink}"><img src="/images/edit/edit.png"></a>
+        </td>
+        <td class="delete"></td>
+        <td class="date">${resource.modified.toLocaleString}</td>
+      </tr>
+    #end
+    </tbody>
+  </table>
 </div>
