@@ -37,3 +37,80 @@ class Resource (
   def editLink = "/edit/edit/" + id.value.toString
   def detailLink = "/edit/detail/" + id.value.toString
 }
+
+object ResourceDetails {
+  case class ResourceDetail (
+    resource: Resource,
+    metadataValues: List[ResourceMetadataValue]
+  ) {
+    val valuesByMetadataId: Map[MetadataId, List[ResourceMetadataValue]] = metadataValues.groupBy(_.metadata.id)
+    def getValuesByMetadataId(metadataId: MetadataId): List[ResourceMetadataValue] =
+      valuesByMetadataId.getOrElse(metadataId, List())
+  }
+
+  sealed trait ResourceMetadataValue {
+    def metadata: Metadata
+    def toLabel: String
+  }
+
+  case class ResourceMetadataValueText (
+    metadata: Metadata,
+    content: String
+  ) extends ResourceMetadataValue {
+    def toLabel = content
+  }
+
+  case class ResourceMetadataValueTextArea (
+    metadata: Metadata,
+    content: String
+  ) extends ResourceMetadataValue {
+    def toLabel = content
+  }
+
+  case class ResourceMetadataValueSelect (
+    metadata: Metadata,
+    metadataValue: MetadataValue,
+    comment: String
+  ) extends ResourceMetadataValue {
+    def toLabel = "[" + metadataValue.value + "] " + comment
+  }
+
+  case class ResourceMetadataValueSelectOnly (
+    metadata: Metadata,
+    metadataValue: MetadataValue
+  ) extends ResourceMetadataValue {
+    def toLabel = "[" + metadataValue.value + "]"
+  }
+
+  case class ResourceMetadataValueRelation (
+    metadata: Metadata,
+    metadataValue: MetadataValue,
+    comment: String
+  ) extends ResourceMetadataValue {
+    def toLabel = "[" + metadataValue.value + "] " + comment
+  }
+
+  case class ResourceMetadataValueLanguage (
+    metadata: Metadata,
+    metadataValue: Language,
+    comment: String
+  ) extends ResourceMetadataValue {
+    def toLabel = "[" + metadataValue.code + ":" + metadataValue.name + "] " + comment
+  }
+
+  case class ResourceMetadataValueDate (
+    metadata: Metadata,
+    content: String,
+    comment: String
+  ) extends ResourceMetadataValue {
+    def toLabel = "[" + content + "] " + comment
+  }
+
+  case class ResourceMetadataValueRange (
+    metadata: Metadata,
+    content: String,
+    comment: String
+  ) extends ResourceMetadataValue {
+    def toLabel = "[" + content + "] " + comment
+  }
+}
