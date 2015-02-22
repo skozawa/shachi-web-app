@@ -14,7 +14,7 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
     inTransaction {
       val annotators = Annotator.selectAll
       val countByAnnotatorId = Resource.countByAnnotatorId
-      val aid = new AnnotatorId(params.getOrElse("aid", "0").toInt)
+      val aid = AnnotatorId(params.getOrElse("aid", "0").toInt)
       val resources = Resource.selectByAnnotatorId(aid)
 
       contentType = "text/html"
@@ -30,7 +30,7 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
   get("""/detail/(\d+)""".r) {
     inTransaction {
       val id = multiParams("captures").head
-      val resourceId = new ResourceId(id.toLong)
+      val resourceId = ResourceId(id.toLong)
 
       Resource.selectDetailById(resourceId).fold(NotFound("Resouce not found")){resource =>
         contentType = "text/html"

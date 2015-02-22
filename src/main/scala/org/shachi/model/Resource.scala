@@ -6,7 +6,7 @@ import org.squeryl.customtypes.CustomTypesMode._
 import org.squeryl.customtypes._
 import java.sql.Timestamp
 
-class ResourceId(id: Long) extends LongField(id) with EntityId[Resource] {
+case class ResourceId(id: Long) extends LongField(id) with EntityId[Resource] {
   override def validate(id: Long) = assert(id > -1, "id must be positive, got " + id)
 }
 
@@ -22,7 +22,7 @@ object ResourceStatus extends Enumeration {
 }
 
 import ResourceStatus._
-class Resource (
+case class Resource (
   val id: ResourceId,
   @Column("shachi_id") val shachiId: String,
   val title: String,
@@ -32,7 +32,7 @@ class Resource (
   val created: Timestamp,
   val modified: Timestamp
 ) extends KeyedEntity[LongField] {
-  def this() = this(new ResourceId(1), "", "", true, new AnnotatorId(1), ResourceStatus.New, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()))
+  def this() = this(ResourceId(1), "", "", true, AnnotatorId(1), ResourceStatus.New, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()))
 
   def editLink = "/edit/edit/" + id.value.toString
   def detailLink = "/edit/detail/" + id.value.toString

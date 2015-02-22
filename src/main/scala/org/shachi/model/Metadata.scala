@@ -5,7 +5,7 @@ import org.squeryl.annotations.Column
 import org.squeryl.customtypes.CustomTypesMode._
 import org.squeryl.customtypes._
 
-class MetadataId(id: Long) extends LongField(id) with EntityId[Metadata] {
+case class MetadataId(id: Long) extends LongField(id) with EntityId[Metadata] {
   override def validate(id: Long) = assert(id > -1, "id must be positive, got " + id)
 }
 
@@ -22,7 +22,7 @@ object MetadataInputType extends Enumeration {
 }
 
 import MetadataInputType._
-class Metadata (
+case class Metadata (
   val id: MetadataId,
   val name: String,
   val label: String,
@@ -33,5 +33,5 @@ class Metadata (
   @Column("value_type") val valueType: String,
   val color: String
 ) extends KeyedEntity[LongField] {
-  def this() = this(new MetadataId(1), "", "", 0, true, false, MetadataInputType.Text, "", "")
+  def this() = this(MetadataId(1), "", "", 0, true, false, MetadataInputType.Text, "", "")
 }

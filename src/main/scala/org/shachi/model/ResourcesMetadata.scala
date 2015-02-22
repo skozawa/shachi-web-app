@@ -5,11 +5,11 @@ import org.squeryl.annotations.Column
 import org.squeryl.customtypes.CustomTypesMode._
 import org.squeryl.customtypes._
 
-class ResourcesMetadataId(id: Long) extends LongField(id) with EntityId[ResourcesMetadata] {
+case class ResourcesMetadataId(id: Long) extends LongField(id) with EntityId[ResourcesMetadata] {
   override def validate(id: Long) = assert(id > -1, "id must be positive, got " + id)
 }
 
-class ResourcesMetadata (
+case class ResourcesMetadata (
   val id: ResourcesMetadataId,
   @Column("resource_id") val resourceId: ResourceId,
   @Column("metadata_id") val metadataId: MetadataId,
@@ -18,6 +18,6 @@ class ResourcesMetadata (
   val content: Option[String],
   val comment: Option[String]
 ) extends KeyedEntity[LongField] {
-  def this() = this(new ResourcesMetadataId(1), new ResourceId(1), new MetadataId(1), new LanguageId(1), new MetadataValueId(1), None, None)
+  def this() = this(ResourcesMetadataId(1), ResourceId(1), MetadataId(1), LanguageId(1), MetadataValueId(1), None, None)
 }
 

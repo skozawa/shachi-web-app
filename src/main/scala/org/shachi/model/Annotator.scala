@@ -5,15 +5,15 @@ import org.squeryl.annotations.Column
 import org.squeryl.customtypes.CustomTypesMode._
 import org.squeryl.customtypes._
 
-class AnnotatorId(id: Long) extends LongField(id) with EntityId[Annotator] {
+case class AnnotatorId(id: Long) extends LongField(id) with EntityId[Annotator] {
   override def validate(id: Long) = assert(id > -1, "id must be positive, got " + id)
 }
 
-class Annotator(
+case class Annotator(
   val id: AnnotatorId,
   val name: String,
   val mail: String,
   val organization: String
 ) extends KeyedEntity[LongField] {
-  def this() = this(new AnnotatorId(1), "", "", "")
+  def this() = this(AnnotatorId(1), "", "", "")
 }

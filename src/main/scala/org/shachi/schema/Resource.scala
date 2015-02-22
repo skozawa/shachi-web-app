@@ -73,5 +73,5 @@ object Resource extends Schema {
 
   def countByAnnotatorId:Map[AnnotatorId, Int] = from(resource)(r =>
     groupBy(r.annotatorId.value) compute(count)
-  ).map(c => (new AnnotatorId(c.key), c.measures.toInt)).toMap
+  ).map(c => (AnnotatorId(c.key), c.measures.toInt)).toMap
 }
