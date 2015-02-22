@@ -14,4 +14,5 @@ class MetadataValue (
   @Column("value_type") val valueType: String,
   val value: String
 ) extends KeyedEntity[LongField] {
+  def this() = this(new MetadataValueId(1), "", "")
 }

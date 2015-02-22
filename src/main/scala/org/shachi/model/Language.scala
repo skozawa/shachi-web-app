@@ -14,6 +14,7 @@ class Language(
   val code: String,
   val name: String,
   val area: String,
-  val valueId: MetadataValueId
+  @Column("value_id") val valueId: MetadataValueId
 ) extends KeyedEntity[LongField] {
+  def this() = this(new LanguageId(1), "", "", "", new MetadataValueId(1))
 }

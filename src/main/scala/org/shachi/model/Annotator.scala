@@ -15,4 +15,5 @@ class Annotator(
   val mail: String,
   val organization: String
 ) extends KeyedEntity[LongField] {
+  def this() = this(new AnnotatorId(1), "", "", "")
 }
