@@ -1,7 +1,6 @@
 <%@ val annotators: Iterable[org.shachi.model.Annotator] %>
 <%@ val countByAnnotatorId: Map[org.shachi.model.AnnotatorId, Int] %>
 <%@ val resources: Iterable[org.shachi.model.Resource] %>
-<h1>Hello, Edit world!</h1>
 
 <div id="annotator_select">
   <form name="selectAnnotatorForm" action="/edit" method="get">

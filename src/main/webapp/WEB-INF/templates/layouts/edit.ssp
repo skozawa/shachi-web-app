@@ -8,7 +8,7 @@
   <body>
     <div id="header">
       <a href="/edit" class="logo">
-        <img src="images/edit/logo.jpg">
+        <img src="/images/edit/logo.jpg">
       </a>
     </div>
 

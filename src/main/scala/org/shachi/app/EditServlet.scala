@@ -6,7 +6,7 @@ import org.squeryl.PrimitiveTypeMode._
 import org.shachi.db.DatabaseSessionSupport
 import org.shachi.schema.Annotator
 import org.shachi.schema.Resource
-import org.shachi.model.AnnotatorId
+import org.shachi.model.{AnnotatorId,ResourceId}
 
 class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
   private val defaultLayout = "WEB-INF/templates/layouts/edit.ssp"
@@ -25,6 +25,21 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
           "countByAnnotatorId" -> countByAnnotatorId,
           "resources" -> resources
       )
+    }
+  }
+
+  get("""/detail/(\d+)""".r) {
+    inTransaction {
+      val id = multiParams("captures").head
+      val resourceId = new ResourceId(id.toLong)
+
+      Resource.selectById(resourceId).fold(NotFound("Resouce not found")){resource =>
+        contentType = "text/html"
+        Ok(ssp("/edit/detail",
+            "layout" -> defaultLayout,
+            "resource" -> resource
+        ))
+      }
     }
   }
 }

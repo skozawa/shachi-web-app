@@ -3,7 +3,7 @@ package org.shachi.schema
 import org.squeryl.Schema
 import org.squeryl.PrimitiveTypeMode._
 import org.shachi.model.{Resource => ResourceModel}
-import org.shachi.model.AnnotatorId
+import org.shachi.model.{AnnotatorId,ResourceId}
 
 object Resource extends Schema {
   val resource = table[ResourceModel]("resource")
@@ -15,6 +15,8 @@ object Resource extends Schema {
   ))
 
   def selectAll = from(resource)(r => select(r))
+
+  def selectById(resourceId: ResourceId): Option[ResourceModel] = from(resource)(r => where(r.id.value === resourceId.value) select(r)).headOption
 
   def selectByAnnotatorId(annotatorId: AnnotatorId) = from(resource)(r => where(r.annotatorId.value === annotatorId.value) select(r))
 

@@ -1,0 +1,5 @@
+<%@ val resource: org.shachi.model.Resource %>
+
+<div>
+  ${resource.id}
+</div>
