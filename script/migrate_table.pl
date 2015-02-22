@@ -22,8 +22,8 @@ my $dbix_new = DBIx::Lite->connect(
 );
 
 migrate_annotators($dbix_old, $dbix_new);
-migrate_languages($dbix_old, $dbix_new);
 migrate_options($dbix_old, $dbix_new);
+migrate_languages($dbix_old, $dbix_new);
 migrate_scheme($dbix_old, $dbix_new);
 migrate_resources($dbix_old, $dbix_new);
 migrate_title_list($dbix_old, $dbix_new);
@@ -46,23 +46,6 @@ sub migrate_annotators {
     }
 }
 
-# 旧languagesテーブルの要素を新languageテーブルに移行
-sub migrate_languages {
-    my ($dbix_old, $dbix_new) = @_;
-    warn "Migrate Languages";
-
-    my @languages = $dbix_old->table('languages')->all;
-    foreach my $language ( @languages ) {
-        my $data = $language->{data};
-        $dbix_new->table('language')->insert({
-            id => $data->{id},
-            code => $data->{code},
-            name => $data->{name},
-            area => $data->{area},
-        });
-    }
-}
-
 # 旧optionsテーブルの要素を新metadata_valueテーブルに移行
 sub migrate_options {
     my ($dbix_old, $dbix_new) = @_;
@@ -78,6 +61,29 @@ sub migrate_options {
         });
     }
 }
+
+# 旧languagesテーブルの要素を新languageテーブルに移行
+sub migrate_languages {
+    my ($dbix_old, $dbix_new) = @_;
+    warn "Migrate Languages";
+
+    my @languages = $dbix_old->table('languages')->all;
+    foreach my $language ( @languages ) {
+        my $data = $language->{data};
+        my $value = $dbix_new->table('metadata_value')->insert({
+            value_type => "language",
+            value => $data->{code},
+        });
+        $dbix_new->table('language')->insert({
+            id => $data->{id},
+            code => $data->{code},
+            name => $data->{name},
+            area => $data->{area},
+            value_id => $dbix_new->dbh->last_insert_id(undef, undef, 'metadata_value', undef),
+        });
+    }
+}
+
 
 # 旧schemeテーブルの要素を新metadataテーブルに移行
 sub migrate_scheme {
@@ -107,7 +113,7 @@ sub migrate_scheme {
             shown => 1,
             multi_value => $data->{multi_value},
             input_type => $input_type_by_type->{$data->{type}},
-            value_type => $data->{options},
+            value_type => $data->{type} eq 'language' ? 'language' : $data->{options},
             color => $data->{color},
         });
     }
@@ -193,10 +199,11 @@ sub migrate_resources {
     my @resources = $dbix_old->table('resources')->all;
     foreach my $resource ( @resources ) {
         my $data = $resource->{data};
+        my ($tmp, $title) = split /,/, $data->{title};
         $dbix_new->table('resource')->insert({
             id => $data->{id},
             shachi_id => $data->{shachi_id},
-            title => $data->{title},
+            title => $title || '',
             is_public => $data->{is_public},
             annotator_id => $data->{annotator},
             status => $status_map->{$data->{status}},
@@ -277,7 +284,7 @@ sub _meta_value {
     my $input_type = $meta->{data}->{input_type};
     if ( $input_type == 1 || $input_type == 2 ) { # text or textarea
         return (0, $text);
-    } elsif ( $input_type == 3 || $input_type == 4 || $input_type == 5 ) { # select or select_only, relation
+    } elsif ( $input_type == 3 || $input_type == 4 || $input_type == 5 || $input_type == 6) { # select or select_only, relation, language
         my $val_id = !$val ? 0 : do {
             my $mv = $dbix_new->table('metadata_value')->search({
                 value_type => $meta->{data}->{value_type},
@@ -286,15 +293,6 @@ sub _meta_value {
             $mv && $mv->{data}->{id};
         };
         # warn $val, "\t", $meta->{data}->{input_type}, "\t", $meta->{data}->{class} || '' if !defined $val_id && $meta->{data}->{class} ne 'motherTongue' && $meta->{data}->{class} ne 'con_role';
-        return ($val_id || 0, undef, $text);
-    } elsif ( $input_type == 6 ) { # language
-        my $val_id = !$val ? 0 : do {
-            my $mv = $dbix_new->table('language')->search({
-                code => $val
-            })->single;
-            $mv && $mv->{data}->{id};
-        };
-        # warn $val, "\t", $meta->{data}->{input_type}, "\t", $meta->{data}->{class} || '' unless defined $val_id;
         return ($val_id || 0, undef, $text);
     } elsif ( $input_type == 7 || $input_type ) { # date or range
         return (0, $val, $text);
