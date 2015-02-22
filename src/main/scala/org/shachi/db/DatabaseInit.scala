@@ -11,7 +11,7 @@ trait DatabaseInit {
 
   val databaseUsername = "root"
   val databasePassword = ""
-  val databaseConnection = "jdbc:mysql://localhost:3306/shachi"
+  val databaseConnection = "jdbc:mysql://localhost:3306/shachi?useUnicode=true&characterEncoding=utf8"
 
   var cpds = new ComboPooledDataSource
 
