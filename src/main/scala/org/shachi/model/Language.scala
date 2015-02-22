@@ -13,6 +13,7 @@ class Language(
   val id: LanguageId,
   val code: String,
   val name: String,
-  val area: String
+  val area: String,
+  val valueId: MetadataValueId
 ) extends KeyedEntity[LongField] {
 }

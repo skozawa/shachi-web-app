@@ -10,7 +10,8 @@ object Language extends Schema {
   on(language)(l => declare(
     l.code is(unique, indexed("idx_code"), dbType("varchar(3)")),
     l.name is(dbType("varchar(100)")),
-    l.area is(dbType("varchar(100)"))
+    l.area is(dbType("varchar(100)")),
+    l.valueId.value is(unique, indexed("idx_value_id"))
   ))
 
   def selectAll = from(language)(s => select(s))

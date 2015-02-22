@@ -11,7 +11,7 @@ object ResourcesMetadata extends Schema {
     rm.resourceId.value is(indexed("idx_resource")),
     rm.content is(dbType("text")),
     rm.comment is(dbType("text")),
-    columns(rm.metadataId.value, rm.valueId) are(indexed("idx_metadata_value"))
+    columns(rm.metadataId.value, rm.valueId.value) are(indexed("idx_metadata_value"))
   ))
 
   def selectAll = from(resourcesMetadata)(rm => select(rm))

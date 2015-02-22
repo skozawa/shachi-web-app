@@ -14,17 +14,10 @@ class ResourcesMetadata (
   @Column("resource_id") val resourceId: ResourceId,
   @Column("metadata_id") val metadataId: MetadataId,
   @Column("language_id") val languageId: LanguageId,
-  @Column("value_id") val valueId: Int,
+  @Column("value_id") val valueId: MetadataValueId,
   val content: Option[String],
   val comment: Option[String]
 ) extends KeyedEntity[LongField] {
-  def this() = this(new ResourcesMetadataId(1), new ResourceId(1), new MetadataId(1), new LanguageId(1), 0, None, None)
+  def this() = this(new ResourcesMetadataId(1), new ResourceId(1), new MetadataId(1), new LanguageId(1), new MetadataValueId(1), None, None)
 }
-
-
-
-
-
-
-
 

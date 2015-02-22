@@ -10,11 +10,13 @@ CREATE TABLE `annotator` (
 DROP TABLE IF EXISTS `language`;
 CREATE TABLE `language` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `code` varchar(3) NOT NULL,
+  `code` varchar(3) NOT NULL,  -- metadata_value.value
   `name` varchar(100) NOT NULL,
   `area` varchar(100) NOT NULL,
+  `value_id` bigint NOT NULL DEFAULT 0, -- metadata_value.id
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_code` (`code`)
+  UNIQUE KEY `idx_code` (`code`),
+  UNIQUE KEY `idx_value_id` (`value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `metadata`;
@@ -65,7 +67,7 @@ CREATE TABLE `resources_metadata` (
   `resource_id` bigint NOT NULL,
   `metadata_id` bigint NOT NULL,
   `language_id` bigint NOT NULL,
-  `value_id` bigint NOT NULL DEFAULT 0, -- metadata_value_id or language_id
+  `value_id` bigint NOT NULL DEFAULT 0,
   `content` text,
   `comment` text,
   PRIMARY KEY (`id`),
