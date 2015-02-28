@@ -34,4 +34,6 @@ case class Metadata (
   val color: String
 ) extends KeyedEntity[LongField] {
   def this() = this(MetadataId(1), "", "", 0, true, false, MetadataInputType.Text, "", "")
+
+  def isOldSender: Boolean = name.matches("contributor_(author|speaker)_.*")
 }

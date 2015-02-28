@@ -96,5 +96,70 @@ body {
     &.label {
         background-color: #ccccff;
     }
+
+    &.operation {
+      width: 40px;
+
+      span {
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        background-repeat: no-repeat;
+        
+        &.add {
+          cursor: pointer;
+          background-image: url('/images/edit/add.png');
+          margin-left: 2px;
+        }
+        &.delete {
+          cursor: pointer;
+          background-image: url('/images/edit/delete.png');
+        }
+      }
+    }
+    &.input {
+      &.text {
+        input {
+          width: 700px;
+        }
+      }
+      &.textarea {
+        textarea {
+          width: 700px;
+        }
+      }
+      &.select, &.select_only, &.relation {
+        select {
+          width: 200px;
+        }
+        input {
+          width: 496px;
+        }
+      }
+      &.language {
+        input {
+          width: 496px;
+          &.lang {
+            width: 200px;
+          }
+        }
+      }
+      &.date {
+        span {
+          margin-right: 39px;
+        }
+        input.comment {
+          width: 496px;
+        }
+      }
+      &.range {
+        span {
+          margin-right: 20px;
+        }
+        input.comment {
+          width: 340px;
+        }
+      }
+    }
   }
 }
