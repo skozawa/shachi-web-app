@@ -18,4 +18,7 @@ object MetadataValue extends Schema {
 
   def selectByIds(ids: List[MetadataValueId]) =
     from(metadataValue)(mv => where(mv.id.value in ids.map(_.value)) select(mv)).seq.toList
+
+  def selectExcludeLangauge =
+    from(metadataValue)(mv => where(not(mv.valueType === "language")) select(mv)).seq.toList
 }

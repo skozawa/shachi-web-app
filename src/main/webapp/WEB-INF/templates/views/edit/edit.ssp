@@ -1,6 +1,7 @@
 <%@ val resource: org.shachi.model.ResourceDetails.ResourceDetail %>
 <%@ val metadata: List[org.shachi.model.Metadata] %>
 <%@ val annotators: Iterable[org.shachi.model.Annotator] %>
+<%@ val valuesByType: Map[String, List[org.shachi.model.MetadataValue]] %>
 
 <div id="edit-header">
 </div>
@@ -23,14 +24,23 @@ EDIT
     <p>modified: ${resource.resource.modified}</p>
   </div>
 
-  <table>
+  <table id="metadata">
     <tbody>
+      <tr>
+        <td>title</td>
+        <td></td>
+        <td>${resource.resource.title}</td>
+      </tr>
       #for ( m <- metadata )
         <tr>
           <td>${m.label}</td>
           <td></td>
           <td>
-            ${render("_edit_input.ssp", Map("metadata" -> m, "values" -> resource.getValuesByMetadataId(m.id)))}
+            ${render("_edit_input.ssp", Map(
+              "metadata" -> m,
+              "values" -> resource.getValuesByMetadataId(m.id),
+              "valuesByType" -> valuesByType
+            ))}
           </td>
         </tr>
       #end

@@ -1,5 +1,6 @@
 <%@ val metadata: org.shachi.model.Metadata %>
 <%@ val values: List[org.shachi.model.ResourceDetails.ResourceMetadataValue] %>
+<%@ val valuesByType: Map[String, List[org.shachi.model.MetadataValue]] %>
 <% import org.shachi.model.MetadataInputType %>
 <% import org.shachi.model.ResourceDetails._ %>
 

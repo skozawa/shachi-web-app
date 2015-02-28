@@ -4,7 +4,7 @@ import org.scalatra._
 import scalate.ScalateSupport
 import org.squeryl.PrimitiveTypeMode._
 import org.shachi.db.DatabaseSessionSupport
-import org.shachi.schema.{Annotator,Resource,Metadata}
+import org.shachi.schema.{Annotator,Resource,Metadata,MetadataValue}
 import org.shachi.model.{AnnotatorId,ResourceId}
 
 class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
@@ -60,7 +60,8 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
           "layout" -> defaultLayout,
           "resource" -> resource,
           "metadata" -> Metadata.selectShown,
-          "annotators" -> Annotator.selectAll
+          "annotators" -> Annotator.selectAll,
+          "valuesByType" -> MetadataValue.selectExcludeLangauge.groupBy(_.valueType)
         ))
       }
     }
