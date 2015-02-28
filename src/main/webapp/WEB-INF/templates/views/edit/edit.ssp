@@ -36,7 +36,7 @@ EDIT
           <td>${m.label}</td>
           <td></td>
           <td>
-            ${render("_edit_input.ssp", Map(
+            ${render("_edit_element.ssp", Map(
               "metadata" -> m,
               "values" -> resource.getValuesByMetadataId(m.id),
               "valuesByType" -> valuesByType

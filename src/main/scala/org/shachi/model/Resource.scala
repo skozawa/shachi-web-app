@@ -105,6 +105,10 @@ object ResourceDetails {
     comment: String
   ) extends ResourceMetadataValue {
     def toLabel = "[" + content + "] " + comment
+    val ymd   = content.split('-')
+    val year  = ymd(0)
+    val month = ymd(1)
+    val day   = ymd(2)
   }
 
   case class ResourceMetadataValueRange (
@@ -113,5 +117,14 @@ object ResourceDetails {
     comment: String
   ) extends ResourceMetadataValue {
     def toLabel = "[" + content + "] " + comment
+    val ranges = content.split(' ')
+    val startymd   = ranges(0).split('-')
+    val startYear  = startymd(0)
+    val startMonth = startymd(1)
+    val startDay   = startymd(2)
+    val endymd     = ranges(1).split('-')
+    val endYear    = endymd(0)
+    val endMonth   = endymd(1)
+    val endDay     = endymd(2)
   }
 }

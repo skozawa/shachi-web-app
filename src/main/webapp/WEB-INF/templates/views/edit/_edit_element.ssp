@@ -1,0 +1,105 @@
+<%@ val metadata: org.shachi.model.Metadata %>
+<%@ val values: List[org.shachi.model.ResourceDetails.ResourceMetadataValue] %>
+<%@ val valuesByType: Map[String, List[org.shachi.model.MetadataValue]] %>
+<% import org.shachi.model.MetadataInputType %>
+<% import org.shachi.model.ResourceDetails._ %>
+
+
+#if ( values.isEmpty )
+  #match (metadata.inputType)
+    #case(MetadataInputType.Text)
+      <input type="text" value="">
+    #case(MetadataInputType.TextArea)
+      <textarea></textarea>
+    #case(MetadataInputType.Select)
+      <select>
+        <option value="" selected></option>
+        #for ( v <- valuesByType(metadata.valueType) )
+          <option value="${v.id.value}">${v.value}</option>
+        #end
+      </select>
+      <input type="text" value="">
+    #case(MetadataInputType.SelectOnly)
+      <select>
+        <option value="" selected></option>
+        #for ( v <- valuesByType(metadata.valueType) )
+          <option value="${v.id.value}">${v.value}</option>
+        #end
+      </select>
+    #case(MetadataInputType.Relation)
+      <select>
+        <option value="" selected></option>
+        #for ( v <- valuesByType(metadata.valueType) )
+          <option value="${v.id.value}">${v.value}</option>
+        #end
+      </select>
+      <input type="text" value="">
+    #case(MetadataInputType.Language)
+      <input type="text" value="">
+      <input type="text" value="">
+    #case(MetadataInputType.Date)
+      <input type="text" size="4" value="">
+      <input type="text" size="2" value="">
+      <input type="text" size="2" value="">
+      <input type="text" value="">
+    #case(MetadataInputType.Range)
+      <input type="text" size="4" value="">
+      <input type="text" size="2" value="">
+      <input type="text" size="2" value="">
+      -
+      <input type="text" size="4" value="">
+      <input type="text" size="2" value="">
+      <input type="text" size="2" value="">
+      <input type="text" value="">
+  #end
+#end
+
+#for ( mv <- values )
+  #match (mv)
+    #case(value: ResourceMetadataValueText)
+      <input type="text" value="${value.content}">
+    #case(value: ResourceMetadataValueTextArea)
+      <textarea>${value.content}</textarea>
+    #case(value: ResourceMetadataValueSelect)
+      <select>
+        <option value=""></option>
+        #for ( v <- valuesByType(metadata.valueType) )
+          <option value="${v.id.value}" #if(value.metadataValueOpt.exists(_.id == v.id))selected#end>${v.value}</option>
+        #end
+      </select>
+      <input type="text" value="${value.comment}">
+    #case(value: ResourceMetadataValueSelectOnly)
+      <select>
+        <option value=""></option>
+        #for ( v <- valuesByType(metadata.valueType) )
+          <option value="${v.id.value}" #if(value.metadataValue.id == v.id)selected#end>${v.value}</option>
+        #end
+      </select>
+    #case(value: ResourceMetadataValueRelation)
+      <select>
+        <option value=""></option>
+        #for ( v <- valuesByType(metadata.valueType) )
+          <option value="${v.id.value}" #if(value.metadataValueOpt.exists(_.id == v.id))selected#end>${v.value}</option>
+        #end
+      </select>
+      <input type="text" value="${value.comment}">
+    #case(value: ResourceMetadataValueLanguage)
+      <input type="text" value="${value.editValue}">
+      <input type="text" value="${value.comment}">
+    #case(value: ResourceMetadataValueDate)
+      <input type="text" size="4" value="${value.year}">
+      <input type="text" size="2" value="${value.month}">
+      <input type="text" size="2" value="${value.day}">
+      <input type="text" value="${value.comment}">
+    #case(value: ResourceMetadataValueRange)
+      <input type="text" size="4" value="${value.startYear}">
+      <input type="text" size="2" value="${value.startMonth}">
+      <input type="text" size="2" value="${value.startDay}">
+      -
+      <input type="text" size="4" value="${value.endYear}">
+      <input type="text" size="2" value="${value.endMonth}">
+      <input type="text" size="2" value="${value.endDay}">
+      <input type="text" value="${value.comment}">
+  #end
+#end
+
