@@ -4,7 +4,7 @@
 <%@ val valuesByType: Map[String, List[org.shachi.model.MetadataValue]] %>
 
 <div id="edit-header">
-  <a href="#">Index</a>,
+  <a href="/edit/?aid=${resource.resource.annotatorId.value}">Index</a>,
   <a href="http://slp.el.itc.nagoya-u.ac.jp/LRC/manual.html" target="_blank">Instruction manual</a>,
   <a href="http://edit.shachi.org/registration_manual.pdf" target="_blank">Registration manual</a>,
   <a href="http://slp.el.itc.nagoya-u.ac.jp/LRC/wiki/" target="_blank">Q&amp;A</a>
@@ -23,8 +23,8 @@
   </p>
   <div>
     <p>SHACHI-ID: ${resource.resource.shachiId}</p>
-    <p>created: ${resource.resource.created}</p>
-    <p>modified: ${resource.resource.modified}</p>
+    <p>created: ${resource.resource.created.toLocaleString}</p>
+    <p>modified: ${resource.resource.modified.toLocaleString}</p>
   </div>
 
   <table id="metadata">
@@ -32,7 +32,7 @@
       <tr>
         <td>title</td>
         <td></td>
-        <td><input type="text" value="${resource.resource.title}"></td>
+        <td class="text"><input type="text" value="${resource.resource.title}"></td>
       </tr>
       #for ( m <- metadata )
         <tr>
@@ -63,4 +63,6 @@
       #end
     </tbody>
   </table>
+
+  <input type="submit" class="confirm" value="Confirm">
 </form>
