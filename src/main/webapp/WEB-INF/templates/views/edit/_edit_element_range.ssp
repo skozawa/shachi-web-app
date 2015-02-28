@@ -1,0 +1,10 @@
+<%@ val valueOpt: Option[org.shachi.model.ResourceDetails.ResourceMetadataValueRange] = None %>
+<input type="text" size="4" value='${valueOpt.fold("")(_.startYear)}'>
+<input type="text" size="2" value='${valueOpt.fold("")(_.startMonth)}'>
+<input type="text" size="2" value='${valueOpt.fold("")(_.startDay)}'>
+-
+<input type="text" size="4" value='${valueOpt.fold("")(_.endYear)}'>
+<input type="text" size="2" value='${valueOpt.fold("")(_.endMonth)}'>
+<input type="text" size="2" value='${valueOpt.fold("")(_.endDay)}'>
+
+<input type="text" value='${valueOpt.fold("")(_.comment)}'>

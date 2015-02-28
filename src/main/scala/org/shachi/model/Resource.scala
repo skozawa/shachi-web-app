@@ -96,7 +96,7 @@ object ResourceDetails {
     comment: String
   ) extends ResourceMetadataValue {
     def toLabel = metadataValueOpt.fold("")(v => "[" + v.code + ":" + v.name + "]") + comment
-    def editValue = metadataValueOpt.fold("")(_.name)
+    def editValue = metadataValueOpt.fold("")(v => v.code + ":" + v.name)
   }
 
   case class ResourceMetadataValueDate (

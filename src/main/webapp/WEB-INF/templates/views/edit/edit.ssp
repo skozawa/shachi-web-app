@@ -29,7 +29,7 @@ EDIT
       <tr>
         <td>title</td>
         <td></td>
-        <td>${resource.resource.title}</td>
+        <td><input type="text" value="${resource.resource.title}"></td>
       </tr>
       #for ( m <- metadata )
         <tr>

@@ -8,98 +8,54 @@
 #if ( values.isEmpty )
   #match (metadata.inputType)
     #case(MetadataInputType.Text)
-      <input type="text" value="">
+      ${render("_edit_element_text.ssp")}
     #case(MetadataInputType.TextArea)
-      <textarea></textarea>
+      ${render("_edit_element_textarea.ssp")}
     #case(MetadataInputType.Select)
-      <select>
-        <option value="" selected></option>
-        #for ( v <- valuesByType(metadata.valueType) )
-          <option value="${v.id.value}">${v.value}</option>
-        #end
-      </select>
-      <input type="text" value="">
+      ${render("_edit_element_select.ssp", Map(
+        "options" -> valuesByType(metadata.valueType)
+      ))}
     #case(MetadataInputType.SelectOnly)
-      <select>
-        <option value="" selected></option>
-        #for ( v <- valuesByType(metadata.valueType) )
-          <option value="${v.id.value}">${v.value}</option>
-        #end
-      </select>
+      ${render("_edit_element_selectonly.ssp", Map(
+        "options" -> valuesByType(metadata.valueType)
+      ))}
     #case(MetadataInputType.Relation)
-      <select>
-        <option value="" selected></option>
-        #for ( v <- valuesByType(metadata.valueType) )
-          <option value="${v.id.value}">${v.value}</option>
-        #end
-      </select>
-      <input type="text" value="">
+      ${render("_edit_element_relation.ssp", Map(
+        "options" -> valuesByType(metadata.valueType)
+      ))}
     #case(MetadataInputType.Language)
-      <input type="text" value="">
-      <input type="text" value="">
+      ${render("_edit_element_language.ssp")}
     #case(MetadataInputType.Date)
-      <input type="text" size="4" value="">
-      <input type="text" size="2" value="">
-      <input type="text" size="2" value="">
-      <input type="text" value="">
+      ${render("_edit_element_date.ssp")}
     #case(MetadataInputType.Range)
-      <input type="text" size="4" value="">
-      <input type="text" size="2" value="">
-      <input type="text" size="2" value="">
-      -
-      <input type="text" size="4" value="">
-      <input type="text" size="2" value="">
-      <input type="text" size="2" value="">
-      <input type="text" value="">
+      ${render("_edit_element_range.ssp")}
   #end
 #end
 
 #for ( mv <- values )
   #match (mv)
     #case(value: ResourceMetadataValueText)
-      <input type="text" value="${value.content}">
+      ${render("_edit_element_text.ssp", Map("valueOpt" -> Some(value)))}
     #case(value: ResourceMetadataValueTextArea)
-      <textarea>${value.content}</textarea>
+      ${render("_edit_element_textarea.ssp", Map("valueOpt" -> Some(value)))}
     #case(value: ResourceMetadataValueSelect)
-      <select>
-        <option value=""></option>
-        #for ( v <- valuesByType(metadata.valueType) )
-          <option value="${v.id.value}" #if(value.metadataValueOpt.exists(_.id == v.id))selected#end>${v.value}</option>
-        #end
-      </select>
-      <input type="text" value="${value.comment}">
+      ${render("_edit_element_select.ssp", Map(
+        "valueOpt" -> Some(value), "options" -> valuesByType(metadata.valueType)
+      ))}
     #case(value: ResourceMetadataValueSelectOnly)
-      <select>
-        <option value=""></option>
-        #for ( v <- valuesByType(metadata.valueType) )
-          <option value="${v.id.value}" #if(value.metadataValue.id == v.id)selected#end>${v.value}</option>
-        #end
-      </select>
+      ${render("_edit_element_selectonly.ssp", Map(
+        "valueOpt" -> Some(value), "options" -> valuesByType(metadata.valueType)
+      ))}
     #case(value: ResourceMetadataValueRelation)
-      <select>
-        <option value=""></option>
-        #for ( v <- valuesByType(metadata.valueType) )
-          <option value="${v.id.value}" #if(value.metadataValueOpt.exists(_.id == v.id))selected#end>${v.value}</option>
-        #end
-      </select>
-      <input type="text" value="${value.comment}">
+      ${render("_edit_element_relation.ssp", Map(
+        "valueOpt" -> Some(value), "options" -> valuesByType(metadata.valueType)
+      ))}
     #case(value: ResourceMetadataValueLanguage)
-      <input type="text" value="${value.editValue}">
-      <input type="text" value="${value.comment}">
+      ${render("_edit_element_language.ssp", Map("valueOpt" -> Some(value)))}
     #case(value: ResourceMetadataValueDate)
-      <input type="text" size="4" value="${value.year}">
-      <input type="text" size="2" value="${value.month}">
-      <input type="text" size="2" value="${value.day}">
-      <input type="text" value="${value.comment}">
+      ${render("_edit_element_date.ssp", Map("valueOpt" -> Some(value)))}
     #case(value: ResourceMetadataValueRange)
-      <input type="text" size="4" value="${value.startYear}">
-      <input type="text" size="2" value="${value.startMonth}">
-      <input type="text" size="2" value="${value.startDay}">
-      -
-      <input type="text" size="4" value="${value.endYear}">
-      <input type="text" size="2" value="${value.endMonth}">
-      <input type="text" size="2" value="${value.endDay}">
-      <input type="text" value="${value.comment}">
+      ${render("_edit_element_range.ssp", Map("valueOpt" -> Some(value)))}
   #end
 #end
 
