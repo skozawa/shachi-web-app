@@ -48,4 +48,21 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
       }
     }
   }
+
+  get("""/edit/(\d+)""".r) {
+    inTransaction {
+      val id = multiParams("captures").head
+      val resourceId = ResourceId(id.toLong)
+
+      Resource.selectDetailById(resourceId).fold(NotFound("Resource not found")) { resource =>
+        contentType = "text/html"
+        Ok(ssp("/edit/edit",
+          "layout" -> defaultLayout,
+          "resource" -> resource,
+          "metadata" -> Metadata.selectShown,
+          "annotators" -> Annotator.selectAll
+        ))
+      }
+    }
+  }
 }

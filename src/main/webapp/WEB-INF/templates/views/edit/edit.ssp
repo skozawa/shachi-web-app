@@ -1,0 +1,39 @@
+<%@ val resource: org.shachi.model.ResourceDetails.ResourceDetail %>
+<%@ val metadata: List[org.shachi.model.Metadata] %>
+<%@ val annotators: Iterable[org.shachi.model.Annotator] %>
+
+<div id="edit-header">
+</div>
+
+EDIT
+<form>
+  <p>
+    Annotator:
+    <select name="annotator">
+      #for ( annotator <- annotators )
+        <option value="${annotator.id.value}"
+          #if(annotator.id == resource.resource.annotatorId) checked #end
+        >${annotator.name}</option>
+      #end
+    </select>
+  </p>
+  <div>
+    <p>SHACHI-ID: ${resource.resource.shachiId}</p>
+    <p>created: ${resource.resource.created}</p>
+    <p>modified: ${resource.resource.modified}</p>
+  </div>
+
+  <table>
+    <tbody>
+      #for ( m <- metadata )
+        <tr>
+          <td>${m.label}</td>
+          <td></td>
+          <td>
+            ${render("_edit_input.ssp", Map("metadata" -> m, "values" -> resource.getValuesByMetadataId(m.id)))}
+          </td>
+        </tr>
+      #end
+    </tbody>
+  </table>
+</form>
