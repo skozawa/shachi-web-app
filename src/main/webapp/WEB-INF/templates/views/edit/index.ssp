@@ -15,10 +15,12 @@
           </option>
         #end
       #end
+      <option value="0">All(${countByAnnotatorId.values.sum})</option>
     </select>
   </form>
 </div>
 
+#if ( ! resources.isEmpty )
 <div>
   <table id="resource-list">
     <thead>
@@ -51,3 +53,4 @@
     </tbody>
   </table>
 </div>
+#end

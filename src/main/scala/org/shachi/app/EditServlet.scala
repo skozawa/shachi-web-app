@@ -14,8 +14,13 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
     inTransaction {
       val annotators = Annotator.selectAll
       val countByAnnotatorId = Resource.countByAnnotatorId
-      val aid = AnnotatorId(params.getOrElse("aid", "0").toInt)
-      val resources = Resource.selectByAnnotatorId(aid)
+      val resources = params.get("aid").map{ aid =>
+        val annotatorId = AnnotatorId(aid.toInt)
+        if (annotatorId.value == 0)
+          Resource.selectAll
+        else
+          Resource.selectByAnnotatorId(annotatorId)
+      }.getOrElse(List())
 
       contentType = "text/html"
       ssp("/edit/index",
