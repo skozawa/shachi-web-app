@@ -69,10 +69,10 @@ object ResourceDetails {
 
   case class ResourceMetadataValueSelect (
     metadata: Metadata,
-    metadataValue: MetadataValue,
+    metadataValueOpt: Option[MetadataValue],
     comment: String
   ) extends ResourceMetadataValue {
-    def toLabel = "[" + metadataValue.value + "] " + comment
+    def toLabel = metadataValueOpt.fold("")(v => "[" + v.value + "]") + comment
   }
 
   case class ResourceMetadataValueSelectOnly (
@@ -84,18 +84,19 @@ object ResourceDetails {
 
   case class ResourceMetadataValueRelation (
     metadata: Metadata,
-    metadataValue: MetadataValue,
+    metadataValueOpt: Option[MetadataValue],
     comment: String
   ) extends ResourceMetadataValue {
-    def toLabel = "[" + metadataValue.value + "] " + comment
+    def toLabel = metadataValueOpt.fold("")(v => "[" + v.value + "]") + comment
   }
 
   case class ResourceMetadataValueLanguage (
     metadata: Metadata,
-    metadataValue: Language,
+    metadataValueOpt: Option[Language],
     comment: String
   ) extends ResourceMetadataValue {
-    def toLabel = "[" + metadataValue.code + ":" + metadataValue.name + "] " + comment
+    def toLabel = metadataValueOpt.fold("")(v => "[" + v.code + ":" + v.name + "]") + comment
+    def editValue = metadataValueOpt.fold("")(_.name)
   }
 
   case class ResourceMetadataValueDate (

@@ -43,21 +43,15 @@ object Resource extends Schema {
           case MetadataInputType.TextArea =>
             Some(ResourceMetadataValueTextArea(metadata, rm.content.getOrElse("")))
           case MetadataInputType.Select =>
-            valueById.get(rm.valueId).map(value =>
-              ResourceMetadataValueSelect(metadata, value, rm.comment.getOrElse(""))
-            )
+            Some(ResourceMetadataValueSelect(metadata, valueById.get(rm.valueId), rm.comment.getOrElse("")))
           case MetadataInputType.SelectOnly =>
             valueById.get(rm.valueId).map(value =>
               ResourceMetadataValueSelectOnly(metadata, value)
             )
           case MetadataInputType.Relation =>
-            valueById.get(rm.valueId).map(value =>
-              ResourceMetadataValueSelect(metadata, value, rm.comment.getOrElse(""))
-            )
+            Some(ResourceMetadataValueSelect(metadata, valueById.get(rm.valueId), rm.comment.getOrElse("")))
           case MetadataInputType.Language =>
-            languageByValueId.get(rm.valueId).map(language =>
-              ResourceMetadataValueLanguage(metadata, language, rm.comment.getOrElse(""))
-            )
+            Some(ResourceMetadataValueLanguage(metadata, languageByValueId.get(rm.valueId), rm.comment.getOrElse("")))
           case MetadataInputType.Date =>
             Some(ResourceMetadataValueDate(metadata, rm.content.getOrElse(""), rm.comment.getOrElse("")))
           case MetadataInputType.Range =>
