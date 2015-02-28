@@ -41,7 +41,7 @@ object Resource extends Schema {
           case MetadataInputType.Text =>
             Some(ResourceMetadataValueText(metadata, rm.content.getOrElse("")))
           case MetadataInputType.TextArea =>
-            Some(ResourceMetadataValueText(metadata, rm.content.getOrElse("")))
+            Some(ResourceMetadataValueTextArea(metadata, rm.content.getOrElse("")))
           case MetadataInputType.Select =>
             valueById.get(rm.valueId).map(value =>
               ResourceMetadataValueSelect(metadata, value, rm.comment.getOrElse(""))
