@@ -8,54 +8,64 @@
 #if ( values.isEmpty )
   #match (metadata.inputType)
     #case(MetadataInputType.Text)
-      ${render("_edit_element_text.ssp")}
+      ${render("_edit_element_text.ssp", Map("metadata" -> metadata))}
     #case(MetadataInputType.TextArea)
-      ${render("_edit_element_textarea.ssp")}
+      ${render("_edit_element_textarea.ssp", Map("metadata" -> metadata))}
     #case(MetadataInputType.Select)
       ${render("_edit_element_select.ssp", Map(
-        "options" -> valuesByType(metadata.valueType)
+        "metadata" -> metadata, "options" -> valuesByType(metadata.valueType)
       ))}
     #case(MetadataInputType.SelectOnly)
       ${render("_edit_element_selectonly.ssp", Map(
-        "options" -> valuesByType(metadata.valueType)
+        "metadata" -> metadata, "options" -> valuesByType(metadata.valueType)
       ))}
     #case(MetadataInputType.Relation)
       ${render("_edit_element_relation.ssp", Map(
-        "options" -> valuesByType(metadata.valueType)
+        "metadata" -> metadata, "options" -> valuesByType(metadata.valueType)
       ))}
     #case(MetadataInputType.Language)
-      ${render("_edit_element_language.ssp")}
+      ${render("_edit_element_language.ssp", Map("metadata" -> metadata))}
     #case(MetadataInputType.Date)
-      ${render("_edit_element_date.ssp")}
+      ${render("_edit_element_date.ssp", Map("metadata" -> metadata))}
     #case(MetadataInputType.Range)
-      ${render("_edit_element_range.ssp")}
+      ${render("_edit_element_range.ssp", Map("metadata" -> metadata))}
   #end
 #end
 
 #for ( mv <- values )
   #match (mv)
     #case(value: ResourceMetadataValueText)
-      ${render("_edit_element_text.ssp", Map("valueOpt" -> Some(value)))}
+      ${render("_edit_element_text.ssp", Map(
+        "metadata" -> metadata, "valueOpt" -> Some(value)
+      ))}
     #case(value: ResourceMetadataValueTextArea)
-      ${render("_edit_element_textarea.ssp", Map("valueOpt" -> Some(value)))}
+      ${render("_edit_element_textarea.ssp", Map(
+        "metadata" -> metadata, "valueOpt" -> Some(value)
+      ))}
     #case(value: ResourceMetadataValueSelect)
       ${render("_edit_element_select.ssp", Map(
-        "valueOpt" -> Some(value), "options" -> valuesByType(metadata.valueType)
+        "metadata" -> metadata, "valueOpt" -> Some(value), "options" -> valuesByType(metadata.valueType)
       ))}
     #case(value: ResourceMetadataValueSelectOnly)
       ${render("_edit_element_selectonly.ssp", Map(
-        "valueOpt" -> Some(value), "options" -> valuesByType(metadata.valueType)
+        "metadata" -> metadata, "valueOpt" -> Some(value), "options" -> valuesByType(metadata.valueType)
       ))}
     #case(value: ResourceMetadataValueRelation)
       ${render("_edit_element_relation.ssp", Map(
-        "valueOpt" -> Some(value), "options" -> valuesByType(metadata.valueType)
+        "metadata" -> metadata, "valueOpt" -> Some(value), "options" -> valuesByType(metadata.valueType)
       ))}
     #case(value: ResourceMetadataValueLanguage)
-      ${render("_edit_element_language.ssp", Map("valueOpt" -> Some(value)))}
+      ${render("_edit_element_language.ssp", Map(
+        "metadata" -> metadata, "valueOpt" -> Some(value)
+      ))}
     #case(value: ResourceMetadataValueDate)
-      ${render("_edit_element_date.ssp", Map("valueOpt" -> Some(value)))}
+      ${render("_edit_element_date.ssp", Map(
+        "metadata" -> metadata, "valueOpt" -> Some(value)
+      ))}
     #case(value: ResourceMetadataValueRange)
-      ${render("_edit_element_range.ssp", Map("valueOpt" -> Some(value)))}
+      ${render("_edit_element_range.ssp", Map(
+        "metadata" -> metadata, "valueOpt" -> Some(value)
+      ))}
   #end
 #end
 

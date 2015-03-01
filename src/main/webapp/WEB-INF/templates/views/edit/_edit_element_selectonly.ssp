@@ -1,7 +1,8 @@
+<%@ val metadata: org.shachi.model.Metadata %>
 <%@ val valueOpt: Option[org.shachi.model.ResourceDetails.ResourceMetadataValueSelectOnly] = None %>
 <%@ val options: List[org.shachi.model.MetadataValue] %>
 <div>
-  <select>
+  <select name="${metadata.name}">
     <option value="" #if(!valueOpt.isDefined)selected#end></option>
     #for ( o <- options )
       <option value="${o.id.value}" #if(valueOpt.exists(_.metadataValue.id == o.id))selected#end>${o.value}</option>

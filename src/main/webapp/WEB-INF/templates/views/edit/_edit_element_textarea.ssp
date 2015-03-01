@@ -1,4 +1,5 @@
+<%@ val metadata: org.shachi.model.Metadata %>
 <%@ val valueOpt: Option[org.shachi.model.ResourceDetails.ResourceMetadataValueTextArea] = None %>
 <div>
-  <textarea rows="4">${valueOpt.fold("")(_.content)}</textarea>
+  <textarea name="${metadata.name}" rows="4">${valueOpt.fold("")(_.content)}</textarea>
 </div>

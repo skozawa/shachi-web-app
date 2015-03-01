@@ -1,11 +1,12 @@
+<%@ val metadata: org.shachi.model.Metadata %>
 <%@ val valueOpt: Option[org.shachi.model.ResourceDetails.ResourceMetadataValueRelation] = None %>
 <%@ val options: List[org.shachi.model.MetadataValue] %>
 <div>
-  <select>
+  <select name="${metadata.name}">
     <option value="" #if(!valueOpt.isDefined)selected#end></option>
     #for ( o <- options )
       <option value="${o.id.value}" #if(valueOpt.exists(_.metadataValueOpt.exists(_.id == o.id)))selected#end>${o.value}</option>
     #end
   </select>
-  <input type="text" value='${valueOpt.fold("")(_.comment)}'>
+  <input name="${metadata.name}-comment" type="text" value='${valueOpt.fold("")(_.comment)}'>
 </div>

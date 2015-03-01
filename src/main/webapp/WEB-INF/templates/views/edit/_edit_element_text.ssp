@@ -1,4 +1,5 @@
+<%@ val metadata: org.shachi.model.Metadata %>
 <%@ val valueOpt: Option[org.shachi.model.ResourceDetails.ResourceMetadataValueText] = None %>
 <div>
-  <input type="text" value='${valueOpt.fold("")(_.content)}'>
+  <input name="${metadata.name}" type="text" value='${valueOpt.fold("")(_.content)}'>
 </div>

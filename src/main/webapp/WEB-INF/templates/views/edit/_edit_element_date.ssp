@@ -1,9 +1,10 @@
+<%@ val metadata: org.shachi.model.Metadata %>
 <%@ val valueOpt: Option[org.shachi.model.ResourceDetails.ResourceMetadataValueDate] = None %>
 <div>
   <span>
-    <input type="text" size="4" value='${valueOpt.fold("")(_.year)}'>
-    <input type="text" size="2" value='${valueOpt.fold("")(_.month)}'>
-    <input type="text" size="2" value='${valueOpt.fold("")(_.day)}'>
+    <input name="${metadata.name}-year" type="text" size="4" value='${valueOpt.fold("")(_.year)}'>
+    <input name="${metadata.name}-month" type="text" size="2" value='${valueOpt.fold("")(_.month)}'>
+    <input name="${metadata.name}-day" type="text" size="2" value='${valueOpt.fold("")(_.day)}'>
   </span>
-  <input type="text" class="comment" value='${valueOpt.fold("")(_.comment)}'>
+  <input name="${metadata.name}-comment" type="text" class="comment" value='${valueOpt.fold("")(_.comment)}'>
 </div>

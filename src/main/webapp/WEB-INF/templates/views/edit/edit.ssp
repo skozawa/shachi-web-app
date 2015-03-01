@@ -10,7 +10,7 @@
   <a href="http://slp.el.itc.nagoya-u.ac.jp/LRC/wiki/" target="_blank">Q&amp;A</a>
 </div>
 
-<form>
+<form action="/edit/confirm/${resource.resource.id.value}" method="post">
   <p>
     Annotator:
     <select name="annotator">
@@ -32,7 +32,7 @@
       <tr>
         <td>title</td>
         <td></td>
-        <td class="text"><input type="text" value="${resource.resource.title}"></td>
+        <td class="input text"><input name="title" type="text" value="${resource.resource.title}"></td>
       </tr>
       #for ( m <- metadata )
         <tr>

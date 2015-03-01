@@ -1,5 +1,6 @@
+<%@ val metadata: org.shachi.model.Metadata %>
 <%@ val valueOpt: Option[org.shachi.model.ResourceDetails.ResourceMetadataValueLanguage] = None %>
 <div>
-  <input type="text" class="lang" value='${valueOpt.fold("")(_.editValue)}'>
-  <input type="text" value='${valueOpt.fold("")(_.comment)}'>
+  <input name="${metadata.name}" type="text" class="lang" value='${valueOpt.fold("")(_.editValue)}'>
+  <input name="${metadata.name}-comment" type="text" value='${valueOpt.fold("")(_.comment)}'>
 </div>
