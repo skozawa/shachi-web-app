@@ -101,8 +101,10 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
       val ids = multiParams(metadata.name).filterNot(_.isEmpty).flatMap(v => toMetadataValueId(v)).toList
       MetadataValue.selectByIds(ids)
     }.map(mv => (mv.id, mv)).toMap
-    val languageByValueId = Language.selectByValueIds(valueById.keys.toList)
-      .map(l => (l.valueId, l)).toMap
+    val languageByCode = metadataList.filter(_.inputType == MetadataInputType.Language).flatMap{ metadata =>
+      val codes = multiParams(metadata.name).map(_.split(':')(0)).filterNot(_.isEmpty).toList
+      Language.selectByCodes(codes)
+    }.map(l => (l.code, l)).toMap
 
     metadataList.flatMap{ metadata =>
       metadata.inputType match {
@@ -143,11 +145,10 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
         case MetadataInputType.Language =>
           val values = multiParams(metadata.name)
           val descs = multiParams(metadata.name + "-desc")
-          values.zipWithIndex.filterNot{ case (value, index) =>
-            value.isEmpty && descs(index).isEmpty
-          }.map{ case (value, index) =>
-            val valueOpt = toMetadataValueId(value).flatMap(id => languageByValueId.get(id))
-            ResourceMetadataValueLanguage(metadata, valueOpt, descs(index))
+          values.map(_.split(':')(0)).zipWithIndex.filterNot{ case (code, index) =>
+            code.isEmpty && descs(index).isEmpty
+          }.map{ case (code, index) =>
+            ResourceMetadataValueLanguage(metadata, languageByCode.get(code), descs(index))
           }
         case MetadataInputType.Date =>
           val years = multiParams(metadata.name + "-year")

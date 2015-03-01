@@ -34,7 +34,7 @@
                   <input type="hidden" name="${m.name}" value='${value.metadataValueOpt.fold("")(v => v.id.value.toString)}'>
                   <input type="hidden" name="${m.name}-desc" value="${value.description}">
                 #case(value: ResourceMetadataValueLanguage)
-                  <input type="hidden" name="${m.name}" value='${value.metadataValueOpt.fold("")(v => v.valueId.value.toString)}'>
+                  <input type="hidden" name="${m.name}" value="${value.editValue}">
                   <input type="hidden" name="${m.name}-desc" value="${value.description}">
                 #case(value: ResourceMetadataValueDate)
                   <input type="hidden" name="${m.name}-year" value="${value.year}">

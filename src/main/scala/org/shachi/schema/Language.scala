@@ -22,4 +22,7 @@ object Language extends Schema {
 
   def selectByValueIds(ids: List[MetadataValueId]) =
     from(language)(l => where(l.valueId.value in ids.map(_.value)) select(l)).seq.toList
+
+  def selectByCodes(codes: List[String]) =
+    from(language)(l => where(l.code in codes) select(l)).seq.toList
 }
