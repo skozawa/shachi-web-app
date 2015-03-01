@@ -4,8 +4,9 @@ import org.scalatra._
 import scalate.ScalateSupport
 import org.squeryl.PrimitiveTypeMode._
 import org.shachi.db.DatabaseSessionSupport
-import org.shachi.schema.{Annotator,Resource,Metadata,MetadataValue}
-import org.shachi.model.{AnnotatorId,ResourceId}
+import org.shachi.schema.{Annotator,Resource,Metadata,MetadataValue,Language}
+import org.shachi.model.{AnnotatorId,ResourceId,MetadataInputType,MetadataValueId}
+import org.shachi.model.ResourceDetails._
 
 class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
   private val defaultLayout = "WEB-INF/templates/layouts/edit.ssp"
@@ -63,6 +64,110 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
           "annotators" -> Annotator.selectAll,
           "valuesByType" -> MetadataValue.selectExcludeLangauge.groupBy(_.valueType)
         ))
+      }
+    }
+  }
+
+  post("""/confirm/(\d+)""".r) {
+    inTransaction {
+      val id = multiParams("captures").head
+      val resourceId = ResourceId(id.toLong)
+
+      Resource.selectById(resourceId).fold(NotFound("Resource not found")){ resource =>
+        println(valuesFromParams)
+        redirect("/edit/edit/" + id)
+      }
+    }
+  }
+
+  private def toMetadataValueId(s: String): Option[MetadataValueId] = {
+    try {
+      Some(MetadataValueId(s.toLong))
+    } catch {
+      case e: Exception => None
+    }
+  }
+
+  private def valuesFromParams: List[ResourceMetadataValue] = {
+    val metadataList = Metadata.selectShown
+    val valueById = metadataList.filter(_.hasMetadataValue).flatMap{ metadata =>
+      val ids = multiParams(metadata.name).filterNot(_.isEmpty).flatMap(v => toMetadataValueId(v)).toList
+      MetadataValue.selectByIds(ids)
+    }.map(mv => (mv.id, mv)).toMap
+    val languageByValueId = Language.selectByValueIds(valueById.keys.toList)
+      .map(l => (l.valueId, l)).toMap
+
+    metadataList.flatMap{ metadata =>
+      metadata.inputType match {
+        case MetadataInputType.Text =>
+          multiParams(metadata.name).filterNot(_.isEmpty).map(v =>
+            ResourceMetadataValueText(metadata, v)
+          )
+        case MetadataInputType.TextArea =>
+          multiParams(metadata.name).filterNot(_.isEmpty).map(v =>
+            ResourceMetadataValueTextArea(metadata, v)
+          )
+        case MetadataInputType.Select =>
+          val values = multiParams(metadata.name)
+          val comments = multiParams(metadata.name + "-comment")
+          values.zipWithIndex.filterNot{ case (value, index) =>
+            value.isEmpty && comments(index).isEmpty
+          }.map{ case (value, index) =>
+              val valueOpt = toMetadataValueId(value).flatMap(id => valueById.get(id))
+              ResourceMetadataValueSelect(metadata, valueOpt, comments(index))
+          }
+        case MetadataInputType.SelectOnly =>
+          multiParams(metadata.name).filterNot(_.isEmpty).flatMap{ v =>
+            toMetadataValueId(v).flatMap(id =>
+              valueById.get(id).map(mv =>
+                ResourceMetadataValueSelectOnly(metadata, mv)
+              )
+            )
+          }
+        case MetadataInputType.Relation =>
+          val values = multiParams(metadata.name)
+          val comments = multiParams(metadata.name + "-comment")
+          values.zipWithIndex.filterNot{ case (value, index) =>
+            value.isEmpty && comments(index).isEmpty
+          }.map{ case (value, index) =>
+            val valueOpt = toMetadataValueId(value).flatMap(id => valueById.get(id))
+            ResourceMetadataValueRelation(metadata, valueOpt, comments(index))
+          }
+        case MetadataInputType.Language =>
+          val values = multiParams(metadata.name)
+          val comments = multiParams(metadata.name + "-comment")
+          values.zipWithIndex.filterNot{ case (value, index) =>
+            value.isEmpty && comments(index).isEmpty
+          }.map{ case (value, index) =>
+            val valueOpt = toMetadataValueId(value).flatMap(id => languageByValueId.get(id))
+            ResourceMetadataValueLanguage(metadata, valueOpt, comments(index))
+          }
+        case MetadataInputType.Date =>
+          val years = multiParams(metadata.name + "-year")
+          val months = multiParams(metadata.name + "-month")
+          val days = multiParams(metadata.name + "-day")
+          val comments = multiParams(metadata.name + "-comment")
+          years.zipWithIndex.filterNot{ case (year, index) =>
+            year.isEmpty && comments(index).isEmpty
+          }.map{ case (year, index) =>
+            val date = years(index) + "-" + months(index) + "-" + days(index)
+            ResourceMetadataValueDate(metadata, date, comments(index))
+          }
+        case MetadataInputType.Range =>
+          val startYears = multiParams(metadata.name + "-startyear")
+          val startMonths = multiParams(metadata.name + "-startmonth")
+          val startDays = multiParams(metadata.name + "-startday")
+          val endYears = multiParams(metadata.name + "-endyear")
+          val endMonths = multiParams(metadata.name + "-endmonth")
+          val endDays = multiParams(metadata.name + "-endday")
+          val comments = multiParams(metadata.name + "-comment")
+          startYears.zipWithIndex.filterNot{ case (v, index) =>
+            startYears(index).isEmpty && endYears(index).isEmpty && comments(index).isEmpty
+          }.map{ case (v, index) =>
+            val startDate = startYears(index) + "-" + startMonths(index) + "-" + startDays(index)
+            val endDate = endYears(index) + "-" + endMonths(index) + "-" + endDays(index)
+            ResourceMetadataValueRange(metadata, startDate + " " + endDate, comments(index))
+          }
       }
     }
   }

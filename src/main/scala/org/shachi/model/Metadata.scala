@@ -36,4 +36,6 @@ case class Metadata (
   def this() = this(MetadataId(1), "", "", 0, true, false, MetadataInputType.Text, "", "")
 
   def isOldSender: Boolean = name.matches("contributor_(author|speaker)_.*")
+
+  def hasMetadataValue: Boolean = List(Select, SelectOnly, Relation, Language).exists(_ == inputType)
 }
