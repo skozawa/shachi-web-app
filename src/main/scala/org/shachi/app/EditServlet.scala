@@ -33,6 +33,21 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
     }
   }
 
+  get("/create") {
+    inTransaction {
+      val annotatorIdOpt = params.get("aid").flatMap(toAnnotatorId(_))
+      val metadataList = Metadata.selectShown
+      contentType = "text/html"
+      ssp("/edit/create",
+        "layout" -> defaultLayout,
+        "annotatorIdOpt" -> annotatorIdOpt,
+        "metadata" -> metadataList,
+        "annotators" -> Annotator.selectAll,
+        "valuesByType" -> MetadataValue.selectExcludeLangauge.groupBy(_.valueType)
+      )
+    }
+  }
+
   get("""/detail/(\d+)""".r) {
     inTransaction {
       val id = multiParams("captures").head

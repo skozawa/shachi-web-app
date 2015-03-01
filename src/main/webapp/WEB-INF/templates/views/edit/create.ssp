@@ -1,0 +1,61 @@
+<%@ val annotatorIdOpt: Option[org.shachi.model.AnnotatorId] %>
+<%@ val metadata: List[org.shachi.model.Metadata] %>
+<%@ val annotators: Iterable[org.shachi.model.Annotator] %>
+<%@ val valuesByType: Map[String, List[org.shachi.model.MetadataValue]] %>
+
+<div id="edit-header">
+  <a href="/edit/?aid=${annotatorIdOpt.fold("")(_.value.toString)}">Index</a>,
+  <a href="http://slp.el.itc.nagoya-u.ac.jp/LRC/manual.html" target="_blank">Instruction manual</a>,
+  <a href="http://edit.shachi.org/registration_manual.pdf" target="_blank">Registration manual</a>,
+  <a href="http://slp.el.itc.nagoya-u.ac.jp/LRC/wiki/" target="_blank">Q&amp;A</a>
+</div>
+
+<form action="/edit/create" method="post">
+  <p>
+    Annotator:
+    <select name="annotator">
+      #for ( annotator <- annotators )
+        <option value="${annotator.id.value}" #if(annotatorIdOpt.exists(_ == annotator.id))selected#end>${annotator.name}</option>
+      #end
+    </select>
+  </p>
+
+  <table id="metadata">
+    <tbody>
+      <tr>
+        <td>title</td>
+        <td></td>
+        <td class="input text"><input name="title" type="text" value=""></td>
+      </tr>
+      #for ( m <- metadata )
+        <tr>
+          <td #if(!m.color.isEmpty)style="background-color:${m.color}"#end>
+            ${m.label}
+            #if (m.name == "contributor")
+              <div>* speaker, author情報はピンク色欄に記載</div>
+            #elseif(m.name == "right")
+              <div>(copy rights, access rights, license)</div>
+            #elseif(m.isOldSender)
+              <div>* 旧sender情報</div>
+            #end
+          </td>
+          <td class="operation">
+            #if (m.multiValue)
+              <span class="add"></span>
+              <span class="delete"></span>
+            #end
+          </td>
+          <td class="input ${m.inputType}">
+            ${render("_edit_element.ssp", Map(
+              "metadata" -> m,
+              "values" -> List(),
+              "valuesByType" -> valuesByType
+            ))}
+          </td>
+        </tr>
+      #end
+    </tbody>
+  </table>
+
+  <input type="submit" class="confirm" value="Confirm">
+</form>
