@@ -49,7 +49,7 @@ object ResourceDetails {
   }
 
   sealed trait ResourceMetadataValue {
-    def metadata: Metadata
+    val metadata: Metadata
     def toLabel: String
   }
 
@@ -70,9 +70,9 @@ object ResourceDetails {
   case class ResourceMetadataValueSelect (
     metadata: Metadata,
     metadataValueOpt: Option[MetadataValue],
-    comment: String
+    description: String
   ) extends ResourceMetadataValue {
-    def toLabel = metadataValueOpt.fold("")(v => "[" + v.value + "]") + comment
+    def toLabel = metadataValueOpt.fold("")(v => "[" + v.value + "]") + description
   }
 
   case class ResourceMetadataValueSelectOnly (
@@ -85,26 +85,25 @@ object ResourceDetails {
   case class ResourceMetadataValueRelation (
     metadata: Metadata,
     metadataValueOpt: Option[MetadataValue],
-    comment: String
+    description: String
   ) extends ResourceMetadataValue {
-    def toLabel = metadataValueOpt.fold("")(v => "[" + v.value + "]") + comment
-  }
+    def toLabel = metadataValueOpt.fold("")(v => "[" + v.value + "]") + description }
 
   case class ResourceMetadataValueLanguage (
     metadata: Metadata,
     metadataValueOpt: Option[Language],
-    comment: String
+    description: String
   ) extends ResourceMetadataValue {
-    def toLabel = metadataValueOpt.fold("")(v => "[" + v.code + ":" + v.name + "]") + comment
+    def toLabel = metadataValueOpt.fold("")(v => "[" + v.code + ":" + v.name + "]") + description
     def editValue = metadataValueOpt.fold("")(v => v.code + ":" + v.name)
   }
 
   case class ResourceMetadataValueDate (
     metadata: Metadata,
     content: String,
-    comment: String
+    description: String
   ) extends ResourceMetadataValue {
-    def toLabel = "[" + content + "] " + comment
+    def toLabel = "[" + content + "] " + description
     lazy val ymd   = content.split('-') ++ List("", "") // avoid outofindex
     lazy val year  = ymd(0)
     lazy val month = ymd(1)
@@ -114,9 +113,9 @@ object ResourceDetails {
   case class ResourceMetadataValueRange (
     metadata: Metadata,
     content: String,
-    comment: String
+    description: String
   ) extends ResourceMetadataValue {
-    def toLabel = "[" + content + "] " + comment
+    def toLabel = "[" + content + "] " + description
     val ranges = content.split(' ') ++ List("") // avoid outofindex
     lazy val startymd   = ranges(0).split('-') ++ List("", "") // avoid outofindex
     lazy val startYear  = startymd(0)

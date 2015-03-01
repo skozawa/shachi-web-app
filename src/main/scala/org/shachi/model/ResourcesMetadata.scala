@@ -16,7 +16,7 @@ case class ResourcesMetadata (
   @Column("language_id") val languageId: LanguageId,
   @Column("value_id") val valueId: MetadataValueId,
   val content: Option[String],
-  val comment: Option[String]
+  val description: Option[String]
 ) extends KeyedEntity[LongField] {
   def this() = this(ResourcesMetadataId(1), ResourceId(1), MetadataId(1), LanguageId(1), MetadataValueId(1), None, None)
 }

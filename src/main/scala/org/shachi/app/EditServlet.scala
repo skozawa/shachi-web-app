@@ -109,12 +109,12 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
           )
         case MetadataInputType.Select =>
           val values = multiParams(metadata.name)
-          val comments = multiParams(metadata.name + "-comment")
+          val descs = multiParams(metadata.name + "-desc")
           values.zipWithIndex.filterNot{ case (value, index) =>
-            value.isEmpty && comments(index).isEmpty
+            value.isEmpty && descs(index).isEmpty
           }.map{ case (value, index) =>
               val valueOpt = toMetadataValueId(value).flatMap(id => valueById.get(id))
-              ResourceMetadataValueSelect(metadata, valueOpt, comments(index))
+              ResourceMetadataValueSelect(metadata, valueOpt, descs(index))
           }
         case MetadataInputType.SelectOnly =>
           multiParams(metadata.name).filterNot(_.isEmpty).flatMap{ v =>
@@ -126,32 +126,32 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
           }
         case MetadataInputType.Relation =>
           val values = multiParams(metadata.name)
-          val comments = multiParams(metadata.name + "-comment")
+          val descs = multiParams(metadata.name + "-desc")
           values.zipWithIndex.filterNot{ case (value, index) =>
-            value.isEmpty && comments(index).isEmpty
+            value.isEmpty && descs(index).isEmpty
           }.map{ case (value, index) =>
             val valueOpt = toMetadataValueId(value).flatMap(id => valueById.get(id))
-            ResourceMetadataValueRelation(metadata, valueOpt, comments(index))
+            ResourceMetadataValueRelation(metadata, valueOpt, descs(index))
           }
         case MetadataInputType.Language =>
           val values = multiParams(metadata.name)
-          val comments = multiParams(metadata.name + "-comment")
+          val descs = multiParams(metadata.name + "-desc")
           values.zipWithIndex.filterNot{ case (value, index) =>
-            value.isEmpty && comments(index).isEmpty
+            value.isEmpty && descs(index).isEmpty
           }.map{ case (value, index) =>
             val valueOpt = toMetadataValueId(value).flatMap(id => languageByValueId.get(id))
-            ResourceMetadataValueLanguage(metadata, valueOpt, comments(index))
+            ResourceMetadataValueLanguage(metadata, valueOpt, descs(index))
           }
         case MetadataInputType.Date =>
           val years = multiParams(metadata.name + "-year")
           val months = multiParams(metadata.name + "-month")
           val days = multiParams(metadata.name + "-day")
-          val comments = multiParams(metadata.name + "-comment")
+          val descs = multiParams(metadata.name + "-desc")
           years.zipWithIndex.filterNot{ case (year, index) =>
-            year.isEmpty && comments(index).isEmpty
+            year.isEmpty && descs(index).isEmpty
           }.map{ case (year, index) =>
             val date = years(index) + "-" + months(index) + "-" + days(index)
-            ResourceMetadataValueDate(metadata, date, comments(index))
+            ResourceMetadataValueDate(metadata, date, descs(index))
           }
         case MetadataInputType.Range =>
           val startYears = multiParams(metadata.name + "-startyear")
@@ -160,13 +160,13 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
           val endYears = multiParams(metadata.name + "-endyear")
           val endMonths = multiParams(metadata.name + "-endmonth")
           val endDays = multiParams(metadata.name + "-endday")
-          val comments = multiParams(metadata.name + "-comment")
+          val descs = multiParams(metadata.name + "-desc")
           startYears.zipWithIndex.filterNot{ case (v, index) =>
-            startYears(index).isEmpty && endYears(index).isEmpty && comments(index).isEmpty
+            startYears(index).isEmpty && endYears(index).isEmpty && descs(index).isEmpty
           }.map{ case (v, index) =>
             val startDate = startYears(index) + "-" + startMonths(index) + "-" + startDays(index)
             val endDate = endYears(index) + "-" + endMonths(index) + "-" + endDays(index)
-            ResourceMetadataValueRange(metadata, startDate + " " + endDate, comments(index))
+            ResourceMetadataValueRange(metadata, startDate + " " + endDate, descs(index))
           }
       }
     }

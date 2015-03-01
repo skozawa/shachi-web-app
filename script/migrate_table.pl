@@ -257,10 +257,10 @@ sub migrate_resources {
                 next unless $val || $text;
                 $text =~ s/^\s+// if $text;
 
-                my ($value_id, $content, $comment) = _meta_value($dbix_new, $meta, $val, $text);
+                my ($value_id, $content, $desc) = _meta_value($dbix_new, $meta, $val, $text);
 
                 # 追加要素がない場合はスキップ
-                if ( !$value_id && !$content && !$comment ) {
+                if ( !$value_id && !$content && !$desc ) {
                     print $data->{id}, "\t", $meta->{data}->{id}, "\t", $item, "\n";
                     next;
                 }
@@ -271,7 +271,7 @@ sub migrate_resources {
                     language_id => $eng_language_id,
                     value_id => $value_id,
                     $content ? (content => $content) : (),
-                    $comment ? (comment => $comment) : (),
+                    $desc ? (description => $desc) : (),
                 });
             }
         }

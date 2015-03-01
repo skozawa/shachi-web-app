@@ -69,7 +69,7 @@ CREATE TABLE `resources_metadata` (
   `language_id` bigint NOT NULL,
   `value_id` bigint NOT NULL DEFAULT 0,
   `content` text,
-  `comment` text,
+  `description` text,
   PRIMARY KEY (`id`),
   KEY `idx_resource` (`resource_id`),
   KEY `idx_metadata_value` (`metadata_id`, `value_id`)

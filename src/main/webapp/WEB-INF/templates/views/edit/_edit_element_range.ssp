@@ -10,5 +10,5 @@
     <input name="${metadata.name}-endmonth" type="text" size="2" value='${valueOpt.fold("")(_.endMonth)}'>
     <input name="${metadata.name}-endday" type="text" size="2" value='${valueOpt.fold("")(_.endDay)}'>
   </span>
-  <input name="${metadata.name}-comment" type="text" class="comment" value='${valueOpt.fold("")(_.comment)}'>
+  <input name="${metadata.name}-desc" type="text" class="desc" value='${valueOpt.fold("")(_.description)}'>
 </div>

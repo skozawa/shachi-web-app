@@ -11,7 +11,7 @@ object ResourcesMetadata extends Schema {
   on(resourcesMetadata)(rm => declare(
     rm.resourceId.value is(indexed("idx_resource")),
     rm.content is(dbType("text")),
-    rm.comment is(dbType("text")),
+    rm.description is(dbType("text")),
     columns(rm.metadataId.value, rm.valueId.value) are(indexed("idx_metadata_value"))
   ))
 

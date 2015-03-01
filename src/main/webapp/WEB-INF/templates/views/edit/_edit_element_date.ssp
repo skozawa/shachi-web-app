@@ -6,5 +6,5 @@
     <input name="${metadata.name}-month" type="text" size="2" value='${valueOpt.fold("")(_.month)}'>
     <input name="${metadata.name}-day" type="text" size="2" value='${valueOpt.fold("")(_.day)}'>
   </span>
-  <input name="${metadata.name}-comment" type="text" class="comment" value='${valueOpt.fold("")(_.comment)}'>
+  <input name="${metadata.name}-desc" type="text" class="desc" value='${valueOpt.fold("")(_.description)}'>
 </div>

@@ -8,5 +8,5 @@
       <option value="${o.id.value}" #if(valueOpt.exists(_.metadataValueOpt.exists(_.id == o.id)))selected#end>${o.value}</option>
     #end
   </select>
-  <input name="${metadata.name}-comment" type="text" value='${valueOpt.fold("")(_.comment)}'>
+  <input name="${metadata.name}-desc" type="text" value='${valueOpt.fold("")(_.description)}'>
 </div>
