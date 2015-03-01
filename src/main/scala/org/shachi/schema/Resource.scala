@@ -9,7 +9,7 @@ import org.shachi.model.{ResourcesMetadata => ResourcesMetadataModel}
 import org.shachi.model.{Metadata => MetadataModel}
 import org.shachi.model.{AnnotatorId, ResourceId, MetadataId, LanguageId, ResourcesMetadataId}
 import org.shachi.model.ResourceDetails._
-import org.shachi.model.MetadataInputType
+import org.shachi.model.{MetadataInputType,ResourceStatus}
 
 object Resource extends Schema {
   val resource = table[ResourceModel]("resource")
@@ -70,6 +70,58 @@ object Resource extends Schema {
   def countByAnnotatorId:Map[AnnotatorId, Int] = from(resource)(r =>
     groupBy(r.annotatorId.value) compute(count)
   ).map(c => (AnnotatorId(c.key), c.measures.toInt)).toMap
+
+  def create(
+    title: String, annotatorId: AnnotatorId, values: List[ResourceMetadataValue],
+    languageId: LanguageId = LanguageId(1819)
+  ): ResourceModel = {
+    val currentTime = new Timestamp((new Date).getTime)
+    val newResource: ResourceModel = resource.insert(ResourceModel(
+      ResourceId(0), shachiId = "", // dummy
+      title = title, isPublic = true,
+      annotatorId = annotatorId, status = ResourceStatus.New,
+      created = currentTime, modified = currentTime
+    ))
+
+    val shachiId = shachiIdFromValues(newResource.id, values)
+    updateShachiId(newResource.id, shachiId)
+
+    val resourcesMetadata = values.map{v =>
+      val item = v.toValueItem
+      ResourcesMetadataModel(
+        ResourcesMetadataId(0), // dummy
+        newResource.id, v.metadata.id, languageId,
+        item._1, item._2, item._3
+      )
+    }
+    ResourcesMetadata.createMulti(resourcesMetadata)
+
+    return newResource
+  }
+
+  private def shachiIdFromValues(resourceId: ResourceId, values: List[ResourceMetadataValue]): String = {
+    val resourceSubjects = values.filter(_.metadata.name == "subject_resourceSubject")
+    val prefix = {
+      if (resourceSubjects.isEmpty) {
+        'N'
+      } else {
+        resourceSubjects.head match {
+          case rmv: ResourceMetadataValueSelect =>
+            rmv.metadataValueOpt.fold('O'){ mv =>
+              mv.value.toUpperCase.charAt(0)
+            }
+          case _ => 'O'
+        }
+      }
+    }
+    f"${prefix}%s-${resourceId.value}%06d"
+  }
+
+  def updateShachiId(resourceId: ResourceId, shachiId: String) =
+    update(resource)(r =>
+      where(r.id.value === resourceId.value)
+      set(r.shachiId := shachiId)
+    )
 
   def updateTitleAndAnnotator(id: ResourceId, title: String, annotatorId: AnnotatorId) =
     update(resource)(r =>

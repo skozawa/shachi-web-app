@@ -48,6 +48,18 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
     }
   }
 
+  post("/create") {
+    val title = params.getOrElse("title", "")
+    // fallback to administrator
+    val annotatorId = AnnotatorId(params.getOrElse("annotator", "1").toLong)
+    val metadataList = Metadata.selectShown
+    val values = valuesFromParams(metadataList)
+
+    val resource = Resource.create(title, annotatorId, values)
+
+    redirect("/edit/?aid=" + annotatorId.value.toString)
+  }
+
   get("""/detail/(\d+)""".r) {
     inTransaction {
       val id = multiParams("captures").head
