@@ -6,6 +6,7 @@ import org.squeryl.PrimitiveTypeMode._
 import org.shachi.db.DatabaseSessionSupport
 import org.shachi.schema.{Annotator,Resource,Metadata,MetadataValue,Language}
 import org.shachi.model.{AnnotatorId,ResourceId,MetadataInputType,MetadataValueId}
+import org.shachi.model.{Metadata => MetadataModel}
 import org.shachi.model.ResourceDetails._
 
 class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
@@ -74,8 +75,15 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
       val resourceId = ResourceId(id.toLong)
 
       Resource.selectById(resourceId).fold(NotFound("Resource not found")){ resource =>
-        println(valuesFromParams)
-        redirect("/edit/edit/" + id)
+        val metadataList = Metadata.selectShown
+
+        contentType = "text/html"
+        Ok(ssp("/edit/confirm",
+          "layout" -> defaultLayout,
+          "resource" -> ResourceDetail(resource, valuesFromParams(metadataList)),
+          "metadata" -> metadataList,
+          "annotatorOpt" -> Annotator.selectById(resource.annotatorId)
+        ))
       }
     }
   }
@@ -88,8 +96,7 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
     }
   }
 
-  private def valuesFromParams: List[ResourceMetadataValue] = {
-    val metadataList = Metadata.selectShown
+  private def valuesFromParams(metadataList: List[MetadataModel]): List[ResourceMetadataValue] = {
     val valueById = metadataList.filter(_.hasMetadataValue).flatMap{ metadata =>
       val ids = multiParams(metadata.name).filterNot(_.isEmpty).flatMap(v => toMetadataValueId(v)).toList
       MetadataValue.selectByIds(ids)

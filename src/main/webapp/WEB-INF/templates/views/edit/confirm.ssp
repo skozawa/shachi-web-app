@@ -1,0 +1,60 @@
+<%@ val resource: org.shachi.model.ResourceDetails.ResourceDetail %>
+<%@ val metadata: List[org.shachi.model.Metadata] %>
+<%@ val annotatorOpt: Option[org.shachi.model.Annotator] %>
+<% import org.shachi.model.ResourceDetails._ %>
+
+<form>
+  <table id="metadata">
+    <tbody>
+      <tr>
+        <td class="label">annotator</td>
+        <td>${annotatorOpt.fold("")(_.name)}</td>
+      </tr>
+      <tr>
+        <td class="label">title</td>
+        <td>${resource.resource.title}</td>
+      </tr>
+      #for ( m <- metadata )
+        <tr>
+          <td class="label">${m.label}</td>
+          <td>
+            #for ( mv <- resource.getValuesByMetadataId(m.id) )
+              ${mv.toLabel}
+              #match (mv)
+                #case(value: ResourceMetadataValueText)
+                  <input type="hidden" name="${m.name}" value="${value.content}">
+                #case(value: ResourceMetadataValueTextArea)
+                  <input type="hidden" name="${m.name}" value="${value.content}">
+                #case(value: ResourceMetadataValueSelect)
+                  <input type="hidden" name="${m.name}" value='${value.metadataValueOpt.fold("")(v => v.id.value.toString)}'>
+                  <input type="hidden" name="${m.name}-desc" value="${value.description}">
+                #case(value: ResourceMetadataValueSelectOnly)
+                  <input type="hidden" name="${m.name}" value="${value.metadataValue.id.value.toString}">
+                #case(value: ResourceMetadataValueRelation)
+                  <input type="hidden" name="${m.name}" value='${value.metadataValueOpt.fold("")(v => v.id.value.toString)}'>
+                  <input type="hidden" name="${m.name}-desc" value="${value.description}">
+                #case(value: ResourceMetadataValueLanguage)
+                  <input type="hidden" name="${m.name}" value='${value.metadataValueOpt.fold("")(v => v.valueId.value.toString)}'>
+                  <input type="hidden" name="${m.name}-desc" value="${value.description}">
+                #case(value: ResourceMetadataValueDate)
+                  <input type="hidden" name="${m.name}-year" value="${value.year}">
+                  <input type="hidden" name="${m.name}-month" value="${value.month}">
+                  <input type="hidden" name="${m.name}-day" value="${value.day}">
+                  <input type="hidden" name="${m.name}-desc" value="${value.description}">
+                #case(value: ResourceMetadataValueRange)
+                  <input type="hidden" name="${m.name}-startYear" value="${value.startYear}">
+                  <input type="hidden" name="${m.name}-startMonth" value="${value.startMonth}">
+                  <input type="hidden" name="${m.name}-startDay" value="${value.startDay}">
+                  <input type="hidden" name="${m.name}-endYear" value="${value.endYear}">
+                  <input type="hidden" name="${m.name}-endMonth" value="${value.endMonth}">
+                  <input type="hidden" name="${m.name}-endDay" value="${value.endDay}">
+                  <input type="hidden" name="${m.name}-desc" value="${value.description}">
+              #end
+              <br>
+            #end
+          </td>
+        </tr>
+      #end
+    </tbody>
+  </table>
+</form>

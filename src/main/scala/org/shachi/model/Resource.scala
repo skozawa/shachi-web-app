@@ -87,7 +87,8 @@ object ResourceDetails {
     metadataValueOpt: Option[MetadataValue],
     description: String
   ) extends ResourceMetadataValue {
-    def toLabel = metadataValueOpt.fold("")(v => "[" + v.value + "]") + description }
+    def toLabel = metadataValueOpt.fold("")(v => "[" + v.value + "]") + description
+  }
 
   case class ResourceMetadataValueLanguage (
     metadata: Metadata,
