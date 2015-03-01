@@ -76,13 +76,16 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
 
       Resource.selectById(resourceId).fold(NotFound("Resource not found")){ resource =>
         val metadataList = Metadata.selectShown
+        val title = params.getOrElse("title", "")
+        val annotatorId = AnnotatorId(params.getOrElse("annotator", "1").toLong) // fallback to administrator
+        val newResource = resource.copy(title = title, annotatorId = annotatorId)
 
         contentType = "text/html"
         Ok(ssp("/edit/confirm",
           "layout" -> defaultLayout,
-          "resource" -> ResourceDetail(resource, valuesFromParams(metadataList)),
+          "resource" -> ResourceDetail(newResource, valuesFromParams(metadataList)),
           "metadata" -> metadataList,
-          "annotatorOpt" -> Annotator.selectById(resource.annotatorId)
+          "annotatorOpt" -> Annotator.selectById(newResource.annotatorId)
         ))
       }
     }

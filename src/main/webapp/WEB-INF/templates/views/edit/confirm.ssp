@@ -15,11 +15,17 @@
     <tbody>
       <tr>
         <td class="label">annotator</td>
-        <td>${annotatorOpt.fold("")(_.name)}</td>
+        <td>
+          ${annotatorOpt.fold("")(_.name)}
+          <input type="hidden" name="annotator" value="${resource.resource.annotatorId.value}">
+        </td>
       </tr>
       <tr>
         <td class="label">title</td>
-        <td>${resource.resource.title}</td>
+        <td>
+          ${resource.resource.title}
+          <input type="hidden" name="title" value="${resource.resource.title}">
+        </td>
       </tr>
       #for ( m <- metadata )
         <tr>

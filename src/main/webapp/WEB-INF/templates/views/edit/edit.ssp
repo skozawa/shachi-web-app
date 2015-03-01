@@ -16,7 +16,7 @@
     <select name="annotator">
       #for ( annotator <- annotators )
         <option value="${annotator.id.value}"
-          #if(annotator.id == resource.resource.annotatorId) checked #end
+          #if(annotator.id == resource.resource.annotatorId)selected#end
         >${annotator.name}</option>
       #end
     </select>
