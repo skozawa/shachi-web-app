@@ -3,7 +3,7 @@ package org.shachi.schema
 import org.squeryl.Schema
 import org.squeryl.PrimitiveTypeMode._
 import org.shachi.model.{ResourcesMetadata => ResourcesMetadataModel}
-import org.shachi.model.{ResourceId}
+import org.shachi.model.{ResourcesMetadataId,ResourceId,MetadataId,LanguageId}
 
 object ResourcesMetadata extends Schema {
   val resourcesMetadata = table[ResourcesMetadataModel]("resources_metadata")
@@ -19,4 +19,16 @@ object ResourcesMetadata extends Schema {
 
   def selectByResourceId(resourceId: ResourceId) =
     from(resourcesMetadata)(rm => where(rm.resourceId.value === resourceId.value) select(rm)).seq.toList
+
+  def selectEditMetadata(resourceId: ResourceId, languageId: LanguageId, metadataIds: List[MetadataId]) =
+    from(resourcesMetadata)(rm => where(
+      (rm.resourceId.value === resourceId.value) and
+      (rm.languageId.value === languageId.value) and
+      (rm.metadataId.value in metadataIds.map(_.value))
+    ) select(rm) ).seq.toList
+
+  def createMulti(rms: List[ResourcesMetadataModel]) = resourcesMetadata.insert(rms)
+
+  def deleteByIds(ids: List[ResourcesMetadataId]) =
+    resourcesMetadata.deleteWhere(rm => rm.id.value in ids.map(_.value))
 }

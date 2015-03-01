@@ -19,5 +19,7 @@ case class ResourcesMetadata (
   val description: Option[String]
 ) extends KeyedEntity[LongField] {
   def this() = this(ResourcesMetadataId(1), ResourceId(1), MetadataId(1), LanguageId(1), MetadataValueId(1), None, None)
+
+  def toValueItem = (valueId, content, description)
 }
 

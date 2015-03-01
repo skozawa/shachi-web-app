@@ -91,6 +91,39 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
     }
   }
 
+  post("""/update/(\d+)""".r) {
+    inTransaction {
+      val id = multiParams("captures").head
+      val resourceId = ResourceId(id.toLong)
+
+      Resource.selectById(resourceId).fold(NotFound("Resource not found")){ resource =>
+        val metadataList = Metadata.selectShown
+        val title = params.getOrElse("title", "")
+        val annotatorId = AnnotatorId(params.getOrElse("annotator", "1").toLong) // fallback to administrator
+        val values = valuesFromParams(metadataList)
+
+        val needsUpdateResource: Boolean =
+          resource.title != title || resource.annotatorId != annotatorId
+        if ( needsUpdateResource ) {
+          Resource.updateTitleAndAnnotator(resource.id, title, annotatorId)
+        }
+
+        val hasChangeMetadataValue = Resource.updateResourceMetadata(
+          resourceId = resource.id,
+          metadataIds = metadataList.map(_.id),
+          newValues = values
+        )
+
+        if (needsUpdateResource || hasChangeMetadataValue) {
+          Resource.updateModified(resource.id)
+        }
+
+        redirect(resource.editDetailLink)
+      }
+    }
+  }
+
+
   private def toMetadataValueId(s: String): Option[MetadataValueId] = {
     try {
       Some(MetadataValueId(s.toLong))
