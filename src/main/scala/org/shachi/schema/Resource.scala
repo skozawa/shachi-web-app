@@ -20,7 +20,7 @@ object Resource extends Schema {
     columns(r.isPublic, r.created) are(indexed("idx_public_created"))
   ))
 
-  def selectAll = from(resource)(r => select(r))
+  def selectAll = from(resource)(r => select(r)).seq.toList
 
   def selectById(resourceId: ResourceId): Option[ResourceModel] = from(resource)(r => where(r.id.value === resourceId.value) select(r)).headOption
 

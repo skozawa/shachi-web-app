@@ -16,12 +16,11 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
     inTransaction {
       val annotators = Annotator.selectAll
       val countByAnnotatorId = Resource.countByAnnotatorId
-      val resources = params.get("aid").map{ aid =>
-        val annotatorId = AnnotatorId(aid.toInt)
-        if (annotatorId.value == 0)
-          Resource.selectAll
-        else
+      val resources = params.get("aid").map{ aidstr =>
+        val annotatorIdOpt = toAnnotatorId(aidstr)
+        annotatorIdOpt.fold(Resource.selectAll)(annotatorId =>
           Resource.selectByAnnotatorId(annotatorId)
+        )
       }.getOrElse(List())
 
       contentType = "text/html"
@@ -123,6 +122,13 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
     }
   }
 
+  private def toAnnotatorId(s: String): Option[AnnotatorId] = {
+    try {
+      Some(AnnotatorId(s.toLong))
+    } catch {
+      case e: Exception => None
+    }
+  }
 
   private def toMetadataValueId(s: String): Option[MetadataValueId] = {
     try {
