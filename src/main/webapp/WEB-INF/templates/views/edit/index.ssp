@@ -41,10 +41,10 @@
           #if(resource.isPublic)[Public]#(else)[Private]#end
         </td>
         <td class="title">
-          <a href="${resource.detailLink}">${resource.title}</a>
+          <a href="${resource.editDetailLink}">${resource.title}</a>
         </td>
         <td class="edit">
-          <a href="${resource.editLink}"><img src="/images/edit/edit.png"></a>
+          <a href="${resource.editEditLink}"><img src="/images/edit/edit.png"></a>
         </td>
         <td class="delete"></td>
         <td class="date">${resource.modified.toLocaleString}</td>

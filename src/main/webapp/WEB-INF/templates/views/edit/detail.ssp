@@ -3,8 +3,8 @@
 <%@ val annotatorOpt: Option[org.shachi.model.Annotator] %>
 
 <div id="detail-header">
-  <a href="/edit?aid=${annotatorOpt.fold("1")(_.id.value.toString)}">Index</a>,
-  <a href="${resource.resource.editLink}">Edit</a>
+  <a href="/edit/?aid=${annotatorOpt.fold("1")(_.id.value.toString)}">Index</a>,
+  <a href="${resource.resource.editEditLink}">Edit</a>
 </div>
 
 <table id="metadata">

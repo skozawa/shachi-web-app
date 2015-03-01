@@ -34,8 +34,10 @@ case class Resource (
 ) extends KeyedEntity[LongField] {
   def this() = this(ResourceId(1), "", "", true, AnnotatorId(1), ResourceStatus.New, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()))
 
-  def editLink = "/edit/edit/" + id.value.toString
-  def detailLink = "/edit/detail/" + id.value.toString
+  def editEditLink = "/edit/edit/" + id.value.toString
+  def editDetailLink = "/edit/detail/" + id.value.toString
+  def editConfirmLink = "/edit/confirm/" + id.value.toString
+  def editUpdateLink = "/edit/update/" + id.value.toString
 }
 
 object ResourceDetails {
