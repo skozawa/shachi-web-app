@@ -16,6 +16,9 @@ object MetadataValue extends Schema {
 
   def selectAll = from(metadataValue)(s => select(s))
 
+  def selectById(id: MetadataValueId): Option[MetadataValueModel] =
+    from(metadataValue)(mv => where(mv.id.value === id.value) select(mv)).headOption
+
   def selectByIds(ids: List[MetadataValueId]) =
     from(metadataValue)(mv => where(mv.id.value in ids.map(_.value)) select(mv)).seq.toList
 

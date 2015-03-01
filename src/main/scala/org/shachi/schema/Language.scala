@@ -17,6 +17,9 @@ object Language extends Schema {
 
   def selectAll = from(language)(s => select(s))
 
+  def selectByValueId(id: MetadataValueId): Option[LanguageModel] =
+    from(language)(l => where(l.valueId.value === id.value) select(l)).headOption
+
   def selectByValueIds(ids: List[MetadataValueId]) =
     from(language)(l => where(l.valueId.value in ids.map(_.value)) select(l)).seq.toList
 }
