@@ -83,23 +83,33 @@ class EditServlet extends ShachiWebAppStack with DatabaseSessionSupport {
     }
   }
 
-  post("""/confirm/(\d+)""".r) {
+  post("""/confirm(?:\/(\d+))?""".r) {
     inTransaction {
       val id = multiParams("captures").head
-      val resourceId = ResourceId(id.toLong)
+      val hasId: Boolean = id match {
+        case idstr: String => true
+        case _ => false
+      }
+      val resourceOpt =
+        if (hasId) Resource.selectById(ResourceId(id.toLong))
+        else None
 
-      Resource.selectById(resourceId).fold(NotFound("Resource not found")){ resource =>
+      if (hasId && resourceOpt.isEmpty) {
+        NotFound("Resource not found")
+      } else {
         val metadataList = Metadata.selectShown
         val title = params.getOrElse("title", "")
-        val annotatorId = AnnotatorId(params.getOrElse("annotator", "1").toLong) // fallback to administrator
-        val newResource = resource.copy(title = title, annotatorId = annotatorId)
+        // fallback to administrator
+        val annotatorId = AnnotatorId(params.getOrElse("annotator", "1").toLong)
 
         contentType = "text/html"
         Ok(ssp("/edit/confirm",
           "layout" -> defaultLayout,
-          "resource" -> ResourceDetail(newResource, valuesFromParams(metadataList)),
-          "metadata" -> metadataList,
-          "annotatorOpt" -> Annotator.selectById(newResource.annotatorId)
+          "resourceOpt" -> resourceOpt,
+          "title" -> title,
+          "annotatorOpt" -> Annotator.selectById(annotatorId),
+          "valuesByMetadataId" -> valuesFromParams(metadataList).groupBy(_.metadata.id),
+          "metadata" -> metadataList
         ))
       }
     }

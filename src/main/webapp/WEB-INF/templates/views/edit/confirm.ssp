@@ -1,37 +1,39 @@
-<%@ val resource: org.shachi.model.ResourceDetails.ResourceDetail %>
-<%@ val metadata: List[org.shachi.model.Metadata] %>
+<%@ val resourceOpt: Option[org.shachi.model.Resource] %>
+<%@ val title: String %>
 <%@ val annotatorOpt: Option[org.shachi.model.Annotator] %>
+<%@ val valuesByMetadataId: Map[org.shachi.model.MetadataId, List[org.shachi.model.ResourceDetails.ResourceMetadataValue]] %>
+<%@ val metadata: List[org.shachi.model.Metadata] %>
 <% import org.shachi.model.ResourceDetails._ %>
 
 <div id="confirm-header">
-  <a href="/edit/?aid=${resource.resource.annotatorId.value}">Index</a>,
+  <a href="/edit/?aid=${annotatorOpt.fold("")(_.id.value.toString)}">Index</a>,
   <a href="http://slp.el.itc.nagoya-u.ac.jp/LRC/manual.html" target="_blank">Instruction manual</a>,
   <a href="http://edit.shachi.org/registration_manual.pdf" target="_blank">Registration manual</a>,
   <a href="http://slp.el.itc.nagoya-u.ac.jp/LRC/wiki/" target="_blank">Q&amp;A</a>
 </div>
 
-<form action="${resource.resource.editUpdateLink}" method="post">
+<form action='${resourceOpt.fold("/edit/create")(_.editUpdateLink)}' method="post">
   <table id="metadata">
     <tbody>
       <tr>
         <td class="label">annotator</td>
         <td>
           ${annotatorOpt.fold("")(_.name)}
-          <input type="hidden" name="annotator" value="${resource.resource.annotatorId.value}">
+          <input type="hidden" name="annotator" value="${annotatorOpt.fold("1")(_.id.value.toString)}">
         </td>
       </tr>
       <tr>
         <td class="label">title</td>
         <td>
-          ${resource.resource.title}
-          <input type="hidden" name="title" value="${resource.resource.title}">
+          ${title}
+          <input type="hidden" name="title" value="${title}">
         </td>
       </tr>
       #for ( m <- metadata )
         <tr>
           <td class="label">${m.label}</td>
           <td>
-            #for ( mv <- resource.getValuesByMetadataId(m.id) )
+            #for ( mv <- valuesByMetadataId.getOrElse(m.id, List()) )
               ${mv.toLabel}
               #match (mv)
                 #case(value: ResourceMetadataValueText)

@@ -10,7 +10,7 @@
   <a href="http://slp.el.itc.nagoya-u.ac.jp/LRC/wiki/" target="_blank">Q&amp;A</a>
 </div>
 
-<form action="/edit/create" method="post">
+<form action="/edit/confirm" method="post">
   <p>
     Annotator:
     <select name="annotator">
