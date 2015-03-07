@@ -34,8 +34,10 @@ object Resource extends Schema {
   def selectResourceMetadaValues(rms: List[ResourcesMetadataModel]): List[ResourceMetadataValue] = {
     val metadataById = Metadata.selectByIds(rms.map(_.metadataId)).map(m => (m.id, m)).toMap
     val valueIds = rms.filter(_.valueId.value != 0).map(_.valueId)
-    val valueById = MetadataValue.selectByIds(valueIds).map(mv => (mv.id, mv)).toMap
     val languageByValueId = Language.selectByValueIds(valueIds).map(l => (l.valueId, l)).toMap
+    val valueById = MetadataValue.selectByIds(valueIds.filterNot(v =>
+      languageByValueId.contains(v)
+    )).map(mv => (mv.id, mv)).toMap
 
     rms.flatMap { rm =>
       metadataById.get(rm.metadataId).flatMap { metadata: MetadataModel =>
