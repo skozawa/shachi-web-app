@@ -1,8 +1,8 @@
 import org.shachi.app.EditServlet
 import org.scalatra.test.scalatest._
-import org.scalatest.FunSuiteLike
+import org.shachi.test.ShachiSuite
 
-class EditServletSpec extends ScalatraSuite with FunSuiteLike {
+class EditServletSpec extends ShachiSuite {
   addServlet(classOf[EditServlet], "/edit/*")
 
   test("simple get") {

@@ -1,10 +1,10 @@
 import org.scalatra.test.scalatest._
-import org.scalatest.FunSuiteLike
 import scala.util.Random
+import org.shachi.test.ShachiSuite
 import org.shachi.model.Language
 import org.shachi.model.{LanguageId,MetadataValueId}
 
-class LanguageIdSpec extends ScalatraSuite with FunSuiteLike {
+class LanguageIdSpec extends ShachiSuite {
   test("Language Id") {
     val idLong1 = Random.nextLong().abs
     val idLong2 = idLong1 + 1
@@ -20,7 +20,7 @@ class LanguageIdSpec extends ScalatraSuite with FunSuiteLike {
   }
 }
 
-class LanguageSpec extends ScalatraSuite with FunSuiteLike {
+class LanguageSpec extends ShachiSuite {
   test("Language") {
     val languageId = LanguageId(Random.nextLong().abs)
     val code = Random.alphanumeric.take(3).mkString

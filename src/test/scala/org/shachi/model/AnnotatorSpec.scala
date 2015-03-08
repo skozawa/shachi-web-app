@@ -1,10 +1,10 @@
 import org.scalatra.test.scalatest._
-import org.scalatest.FunSuiteLike
 import scala.util.Random
+import org.shachi.test.ShachiSuite
 import org.shachi.model.Annotator
 import org.shachi.model.AnnotatorId
 
-class AnnotatorIdSpec extends ScalatraSuite with FunSuiteLike {
+class AnnotatorIdSpec extends ShachiSuite {
   test("Annotator Id") {
     val idLong1 = Random.nextLong().abs
     val idLong2 = Random.nextLong().abs
@@ -20,7 +20,7 @@ class AnnotatorIdSpec extends ScalatraSuite with FunSuiteLike {
   }
 }
 
-class AnnotatorSpec extends ScalatraSuite with FunSuiteLike {
+class AnnotatorSpec extends ShachiSuite {
   test("Annotator") {
     val annotatorId = AnnotatorId(Random.nextLong().abs)
     val name = Random.alphanumeric.take(10).mkString

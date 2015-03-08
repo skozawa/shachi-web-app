@@ -1,10 +1,10 @@
 import org.scalatra.test.scalatest._
-import org.scalatest.FunSuiteLike
 import scala.util.Random
+import org.shachi.test.ShachiSuite
 import org.shachi.model.ResourcesMetadata
 import org.shachi.model.{ResourcesMetadataId,ResourceId,MetadataId,LanguageId,MetadataValueId}
 
-class ResourcesMetadataIdSpec extends ScalatraSuite with FunSuiteLike {
+class ResourcesMetadataIdSpec extends ShachiSuite {
   test("ResourcesMetadata Id") {
     val idLong1 = Random.nextLong().abs
     val idLong2 = idLong1 + 1
@@ -20,7 +20,7 @@ class ResourcesMetadataIdSpec extends ScalatraSuite with FunSuiteLike {
   }
 }
 
-class ResourcesMetadataSpec extends ScalatraSuite with FunSuiteLike {
+class ResourcesMetadataSpec extends ShachiSuite {
   test("ResourcesMetadata") {
     val rmId = ResourcesMetadataId(Random.nextLong().abs)
     val resourceId = ResourceId(Random.nextLong().abs)

@@ -1,13 +1,13 @@
 import org.scalatra.test.scalatest._
-import org.scalatest.FunSuiteLike
 import scala.util.Random
 import java.sql.Timestamp
+import org.shachi.test.ShachiSuite
 import org.shachi.model.Resource
 import org.shachi.model.{ResourceId,AnnotatorId}
 import org.shachi.model.ResourceStatus
 import org.shachi.model.ResourceDetails
 
-class ResourceIdSpec extends ScalatraSuite with FunSuiteLike {
+class ResourceIdSpec extends ShachiSuite {
   test("Resource Id") {
     val idLong1 = Random.nextLong().abs
     val idLong2 = idLong1 + 1
@@ -23,7 +23,7 @@ class ResourceIdSpec extends ScalatraSuite with FunSuiteLike {
   }
 }
 
-class ResourceSpec extends ScalatraSuite with FunSuiteLike {
+class ResourceSpec extends ShachiSuite {
   test("Resource") {
     val resourceId = ResourceId(Random.nextLong().abs)
     val shachiId = Random.alphanumeric.take(10).mkString
