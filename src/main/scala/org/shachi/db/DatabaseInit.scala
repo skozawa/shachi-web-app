@@ -9,17 +9,13 @@ import org.slf4j.LoggerFactory
 trait DatabaseInit {
   val logger = LoggerFactory.getLogger(getClass)
 
-  val databaseUsername = "root"
-  val databasePassword = ""
-  val databaseConnection = "jdbc:mysql://localhost:3306/shachi?useUnicode=true&characterEncoding=utf8"
-
   var cpds = new ComboPooledDataSource
 
-  def configureDb() {
+  def configureDb(jdbcUrl: String, user: String, pass: String) {
     cpds.setDriverClass("com.mysql.jdbc.Driver")
-    cpds.setJdbcUrl(databaseConnection)
-    cpds.setUser(databaseUsername)
-    cpds.setPassword(databasePassword)
+    cpds.setJdbcUrl(jdbcUrl)
+    cpds.setUser(user)
+    cpds.setPassword(pass)
 
     cpds.setMinPoolSize(1)
     cpds.setAcquireIncrement(1)
