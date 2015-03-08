@@ -1,12 +1,11 @@
 import org.scalatra.test.scalatest._
-import scala.util.Random
 import org.shachi.test.ShachiSuite
 import org.shachi.model.ResourcesMetadata
 import org.shachi.model.{ResourcesMetadataId,ResourceId,MetadataId,LanguageId,MetadataValueId}
 
 class ResourcesMetadataIdSpec extends ShachiSuite {
   test("ResourcesMetadata Id") {
-    val idLong1 = Random.nextLong().abs
+    val idLong1 = randomLong
     val idLong2 = idLong1 + 1
 
     val rmId1 = ResourcesMetadataId(idLong1)
@@ -22,12 +21,12 @@ class ResourcesMetadataIdSpec extends ShachiSuite {
 
 class ResourcesMetadataSpec extends ShachiSuite {
   test("ResourcesMetadata") {
-    val rmId = ResourcesMetadataId(Random.nextLong().abs)
-    val resourceId = ResourceId(Random.nextLong().abs)
-    val metadataId = MetadataId(Random.nextLong().abs)
-    val languageId = LanguageId(Random.nextLong().abs)
-    val valueId = MetadataValueId(Random.nextLong.abs)
-    val content = Some(Random.alphanumeric.take(10).mkString)
+    val rmId = ResourcesMetadataId(randomLong)
+    val resourceId = ResourceId(randomLong)
+    val metadataId = MetadataId(randomLong)
+    val languageId = LanguageId(randomLong)
+    val valueId = MetadataValueId(randomLong)
+    val content = Some(randomStr(10))
     val description = None
     val rm = ResourcesMetadata(rmId, resourceId, metadataId, languageId, valueId, content, description)
 

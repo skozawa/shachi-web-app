@@ -1,6 +1,4 @@
 import org.scalatra.test.scalatest._
-import scala.util.Random
-import java.sql.Timestamp
 import org.shachi.test.ShachiSuite
 import org.shachi.model.Resource
 import org.shachi.model.{ResourceId,AnnotatorId}
@@ -9,7 +7,7 @@ import org.shachi.model.ResourceDetails
 
 class ResourceIdSpec extends ShachiSuite {
   test("Resource Id") {
-    val idLong1 = Random.nextLong().abs
+    val idLong1 = randomLong
     val idLong2 = idLong1 + 1
 
     val resourceId1 = ResourceId(idLong1)
@@ -25,14 +23,14 @@ class ResourceIdSpec extends ShachiSuite {
 
 class ResourceSpec extends ShachiSuite {
   test("Resource") {
-    val resourceId = ResourceId(Random.nextLong().abs)
-    val shachiId = Random.alphanumeric.take(10).mkString
-    val title = Random.alphanumeric.take(10).mkString
+    val resourceId = ResourceId(randomLong)
+    val shachiId = randomStr(10)
+    val title = randomStr(10)
     val isPublic = true
-    val annotatorId = AnnotatorId(Random.nextLong().abs)
+    val annotatorId = AnnotatorId(randomLong)
     val status = ResourceStatus.New
-    val created = new Timestamp(System.currentTimeMillis)
-    val modified = new Timestamp(System.currentTimeMillis)
+    val created = currentTimestamp
+    val modified = currentTimestamp
     val resource = Resource(
       resourceId, shachiId, title, isPublic, annotatorId,
       status, created, modified

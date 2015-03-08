@@ -1,13 +1,12 @@
 import org.scalatra.test.scalatest._
-import scala.util.Random
 import org.shachi.test.ShachiSuite
 import org.shachi.model.MetadataValue
 import org.shachi.model.MetadataValueId
 
 class MetadataValueIdSpec extends ShachiSuite {
   test("MetadataValue Id") {
-    val idLong1 = Random.nextLong().abs
-    val idLong2 = Random.nextLong().abs
+    val idLong1 = randomLong
+    val idLong2 = randomLong
 
     val metadataValueId1 = MetadataValueId(idLong1)
     val metadataValueId2 = MetadataValueId(idLong2)
@@ -22,9 +21,9 @@ class MetadataValueIdSpec extends ShachiSuite {
 
 class MetadataValueSpec extends ShachiSuite {
   test("MetadataValue") {
-    val metadataValueId = MetadataValueId(Random.nextLong().abs)
-    val valueType = Random.alphanumeric.take(10).mkString
-    val value = Random.alphanumeric.take(10).mkString
+    val metadataValueId = MetadataValueId(randomLong)
+    val valueType = randomStr(10)
+    val value = randomStr(10)
     val metadataValue = MetadataValue(metadataValueId, valueType, value)
 
     metadataValue.id should be (metadataValueId)

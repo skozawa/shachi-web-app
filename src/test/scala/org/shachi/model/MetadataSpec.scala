@@ -1,5 +1,4 @@
 import org.scalatra.test.scalatest._
-import scala.util.Random
 import org.shachi.test.ShachiSuite
 import org.shachi.model.Metadata
 import org.shachi.model.MetadataId
@@ -7,7 +6,7 @@ import org.shachi.model.MetadataInputType
 
 class MetadataIdSpec extends ShachiSuite {
   test("Metadata Id") {
-    val idLong1 = Random.nextLong().abs
+    val idLong1 = randomLong
     val idLong2 = idLong1 + 1
 
     val metadataId1 = MetadataId(idLong1)
@@ -23,15 +22,15 @@ class MetadataIdSpec extends ShachiSuite {
 
 class MetadataSpec extends ShachiSuite {
   test("Metadata") {
-    val metadataId = MetadataId(Random.nextLong().abs)
-    val name = Random.alphanumeric.take(10).mkString
-    val label = Random.alphanumeric.take(10).mkString
-    val orderNum = Random.nextInt()
+    val metadataId = MetadataId(randomLong)
+    val name = randomStr(10)
+    val label = randomStr(10)
+    val orderNum = randomInt
     val shown = true
     val multiValue = false
     val inputType = MetadataInputType.Text
-    val valueType = Random.alphanumeric.take(10).mkString
-    val color = Random.alphanumeric.take(10).mkString
+    val valueType = randomStr(10)
+    val color = randomStr(10)
     val metadata = Metadata(
       metadataId, name, label, orderNum, shown,
       multiValue, inputType, valueType, color

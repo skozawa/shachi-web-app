@@ -1,12 +1,11 @@
 import org.scalatra.test.scalatest._
-import scala.util.Random
 import org.shachi.test.ShachiSuite
 import org.shachi.model.Language
 import org.shachi.model.{LanguageId,MetadataValueId}
 
 class LanguageIdSpec extends ShachiSuite {
   test("Language Id") {
-    val idLong1 = Random.nextLong().abs
+    val idLong1 = randomLong
     val idLong2 = idLong1 + 1
 
     val languageId1 = LanguageId(idLong1)
@@ -22,11 +21,11 @@ class LanguageIdSpec extends ShachiSuite {
 
 class LanguageSpec extends ShachiSuite {
   test("Language") {
-    val languageId = LanguageId(Random.nextLong().abs)
-    val code = Random.alphanumeric.take(3).mkString
-    val name = Random.alphanumeric.take(10).mkString
-    val area = Random.alphanumeric.take(10).mkString
-    val valueId = MetadataValueId(Random.nextLong.abs)
+    val languageId = LanguageId(randomLong)
+    val code = randomStr(3)
+    val name = randomStr(10)
+    val area = randomStr(10)
+    val valueId = MetadataValueId(randomLong)
     val language = Language(languageId, code, name, area, valueId)
 
     language.id should be (languageId)

@@ -4,21 +4,23 @@ import org.scalatra.test.scalatest._
 import org.scalatest.FunSuiteLike
 import org.shachi.db.DatabaseInit
 import scala.util.Random
+import java.sql.Timestamp
 
 trait ShachiSuite extends ScalatraSuite with FunSuiteLike {
+  def randomStr(num: Int): String = Random.alphanumeric.take(num).mkString
+  def randomLong = Random.nextLong().abs
+  def randomInt = Random.nextInt()
+  def currentTimestamp = new Timestamp(System.currentTimeMillis)
 }
 
 trait ShachiSuiteDB extends ShachiSuite with DatabaseInit {
   import org.shachi.schema._
   import org.shachi.model.{MetadataInputType,ResourceStatus,ResourceDetails}
-  import java.sql.Timestamp
 
   def configureTestDb = {
     val jdbcurl = "jdbc:mysql://localhost:3306/shachi_test?useUnicode=true&characterEncoding=utf8"
     configureDb(jdbcurl, "root", "")
   }
-
-  private def randomStr(num: Int): String = Random.alphanumeric.take(num).mkString
 
   def createAnnotator (
     name: String = randomStr(10),
@@ -72,8 +74,8 @@ trait ShachiSuiteDB extends ShachiSuite with DatabaseInit {
     isPublic: Boolean = true,
     annotatorIdOpt: Option[org.shachi.model.AnnotatorId] = None,
     status: ResourceStatus.ResourceStatus = ResourceStatus.New,
-    created: Timestamp = new Timestamp(System.currentTimeMillis),
-    modified: Timestamp = new Timestamp(System.currentTimeMillis),
+    created: Timestamp = currentTimestamp,
+    modified: Timestamp = currentTimestamp,
     values: List[ResourceDetails.ResourceMetadataValue] = List()
   ) = {
     val annotatorId = annotatorIdOpt.getOrElse(createAnnotator().id)
