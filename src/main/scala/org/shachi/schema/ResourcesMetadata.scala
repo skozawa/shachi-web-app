@@ -27,6 +27,8 @@ object ResourcesMetadata extends Schema {
       (rm.metadataId.value in metadataIds.map(_.value))
     ) select(rm) ).seq.toList
 
+  def create(rm: ResourcesMetadataModel) = resourcesMetadata.insert(rm)
+
   def createMulti(rms: List[ResourcesMetadataModel]) = resourcesMetadata.insert(rms)
 
   def deleteByIds(ids: List[ResourcesMetadataId]) =

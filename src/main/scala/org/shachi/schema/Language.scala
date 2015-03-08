@@ -25,4 +25,6 @@ object Language extends Schema {
 
   def selectByCodes(codes: List[String]) =
     from(language)(l => where(l.code in codes) select(l)).seq.toList
+
+  def create(model: LanguageModel) = language.insert(model)
 }

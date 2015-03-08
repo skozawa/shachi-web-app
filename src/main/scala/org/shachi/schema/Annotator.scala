@@ -18,4 +18,6 @@ object Annotator extends Schema {
 
   def selectById(id: AnnotatorId): Option[AnnotatorModel] =
     from(annotator)(a => where(a.id.value === id.value) select(a)).headOption
+
+  def create(model: AnnotatorModel) = annotator.insert(model)
 }

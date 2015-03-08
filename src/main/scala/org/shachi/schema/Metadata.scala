@@ -22,4 +22,6 @@ object Metadata extends Schema {
 
   def selectByIds(ids: List[MetadataId]) =
     from(metadata)(m => where(m.id.value in ids.map(_.value)) select(m)).seq.toList
+
+  def create(model: MetadataModel) = metadata.insert(model)
 }

@@ -24,4 +24,6 @@ object MetadataValue extends Schema {
 
   def selectExcludeLangauge =
     from(metadataValue)(mv => where(not(mv.valueType === "language")) select(mv)).seq.toList
+
+  def create(model: MetadataValueModel) = metadataValue.insert(model)
 }
