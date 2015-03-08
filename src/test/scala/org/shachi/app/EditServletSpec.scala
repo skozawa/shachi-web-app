@@ -1,12 +1,13 @@
 import org.shachi.app.EditServlet
 import org.scalatra.test.scalatest._
-import org.shachi.test.ShachiSuite
+import org.shachi.test.ShachiSuiteDB
 
-class EditServletSpec extends ShachiSuite {
+class EditServletSpec extends ShachiSuiteDB {
   addServlet(classOf[EditServlet], "/edit/*")
+  configureTestDb
 
   test("simple get") {
-    get("/") {
+    get("/edit/") {
       status should equal(200)
     }
   }
